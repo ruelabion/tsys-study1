@@ -18,3 +18,9 @@ View your app in AI Studio: https://ai.studio/apps/68b3d7fc-3a06-47b2-a4d8-187ea
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+
+## Ownership note
+
+The "Electrical Distributor" template design previously pitched as a live demo at
+`tsys-demo.spiceworx.com` has been decommissioned and is now owned by **powerboxsolutions.com**.
