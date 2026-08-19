@@ -6,8 +6,8 @@ export default function Hero() {
     <section className="relative min-h-[560px] md:min-h-[680px] flex items-center overflow-hidden mt-[100px]">
       <div className="absolute inset-0 z-0">
         <img
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBHsEXWxng3wVcGX4T_PBhAmLzW4toO6KSfNvQqNEnOcuu9Z_nWNmcjpCHB3dCoJAmLS4hmGiiTP-6wIy1FaLLBuSFRUxvrkawZ7y_KTBPAqGavwoao9AJiVYAdlRxXo7ka5T8ZnypDqaTsPrDYiT5bIkHROlfK_KrdVHHS18mz2eePoXMltgi3GrL6NDqDyLVqLaSTYabtFNqEzerpppXSdNPIDFCmBThm16pGfLaq3stP7fqpIgMIQX5Zb9bRDhYO8xGjwW6AYY"
-          alt="Industrial Control Room"
+          src="/images/slideshow/sl-1.jpg"
+          alt="T'sys Industrial Control Room"
           className="w-full h-full object-cover"
         />
         <div
@@ -23,15 +23,15 @@ export default function Hero() {
           transition={{ duration: 0.6 }}
           className="max-w-2xl"
         >
-          <p className="label-caps text-white/60 mb-6 tracking-widest">T'sys Industrial Controls Inc.</p>
-          <h1 className="text-4xl md:text-6xl text-white mb-2 leading-tight tracking-tight">
-            INDUSTRIAL SOLUTIONS.
+          <p className="label-caps text-white/60 mb-6 tracking-widest">T'sys Industrial Controls Inc. — Est. 2002</p>
+          <h1 className="text-3xl md:text-5xl text-white mb-2 leading-tight tracking-tight">
+            Electrical Systems.
           </h1>
-          <h1 className="text-4xl md:text-6xl text-primary mb-8 leading-tight tracking-tight">
-            BUILT FOR RELIABILITY.
+          <h1 className="text-3xl md:text-5xl text-primary mb-8 leading-tight tracking-tight">
+            Engineered, Built, and Delivered.
           </h1>
           <p className="text-base md:text-lg text-white/80 mb-10 max-w-lg leading-relaxed font-normal">
-            We provide high-quality industrial automation and electrical control components with expert support you can rely on.
+            From industrial components to complete power and control systems, T’sys supports commercial and industrial projects with reliable engineering, fabrication, and supply.
           </p>
           <div className="flex flex-wrap gap-4">
             <button className="bg-primary text-white px-8 py-4 label-caps flex items-center gap-2 hover:bg-primary-container transition-all active:scale-95">

@@ -1,17 +1,24 @@
 import { Search, Menu } from 'lucide-react';
 
-const navLinks = [
+type NavMeta = { category?: string; productId?: string };
+
+const navLinks: { label: string; page: string }[] = [
   { label: 'Home', page: 'home' },
-  { label: 'Products', page: 'product' },
-  { label: 'Services', page: 'home' },
-  { label: 'About Us', page: 'home' },
-  { label: 'Downloads', page: 'home' },
+  { label: 'Products', page: 'products' },
+  { label: 'About Us', page: 'about' },
   { label: 'Contact Us', page: 'form' },
 ];
 
-export default function Header({ onNavigate, currentPage }: { onNavigate: (page: string) => void, currentPage: string }) {
+export default function Header({
+  onNavigate,
+  currentPage,
+}: {
+  onNavigate: (page: string, meta?: NavMeta) => void;
+  currentPage: string;
+}) {
   const isActive = (label: string, page: string) =>
-    (label === 'Home' && currentPage === 'home') || (page !== 'home' && currentPage === page);
+    (label === 'Home' && currentPage === 'home') ||
+    (page !== 'home' && currentPage === page);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">

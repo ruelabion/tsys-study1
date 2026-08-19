@@ -2,7 +2,6 @@ build/
 dist/
 coverage/
 .env*
-!.env.example
 # --- macOS Specific ---
 .DS_Store
 .AppleDouble

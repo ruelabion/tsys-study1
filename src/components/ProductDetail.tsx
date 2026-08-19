@@ -1,185 +1,266 @@
-import { Settings, Download, ChevronRight, Filter, Cpu, ShieldCheck, Info, FileText } from 'lucide-react';
+import { useState } from 'react';
+import { ChevronRight, Download, ArrowRight, CheckCircle } from 'lucide-react';
 import { motion } from 'motion/react';
+import { getProductById, getProductsByCategory, CATEGORY_LABELS } from '../data/products';
 
-export default function ProductDetail({ onBack }: { onBack: () => void }) {
-  const specs = [
-    { model: 'FRN0002E2S-4E', capacity: '0.4', current: '1.5', dimensions: '110 x 180 x 139' },
-    { model: 'FRN0004E2S-4E', capacity: '0.75', current: '2.5', dimensions: '110 x 180 x 139' },
-    { model: 'FRN0006E2S-4E', capacity: '1.5', current: '4.0', dimensions: '110 x 180 x 149' },
-    { model: 'FRN0012E2S-4E', capacity: '4.0', current: '9.0', dimensions: '140 x 260 x 145' },
-  ];
+export default function ProductDetail({
+  productId,
+  onBack,
+  onSelectProduct,
+}: {
+  productId: string;
+  onBack: () => void;
+  onSelectProduct: (id: string) => void;
+}) {
+  const product = getProductById(productId);
+  const [activeVariant, setActiveVariant] = useState(0);
+
+  if (!product) {
+    return (
+      <div className="pt-[100px] flex items-center justify-center min-h-[50vh]">
+        <div className="text-center">
+          <p className="font-headline font-bold text-xl mb-3">Product not found</p>
+          <button onClick={onBack} className="text-primary label-caps text-sm hover:underline">← Back to Products</button>
+        </div>
+      </div>
+    );
+  }
+
+  const related = (product.relatedIds ?? [])
+    .map(id => getProductById(id))
+    .filter(Boolean) as NonNullable<ReturnType<typeof getProductById>>[];
+
+  const variant = product.variants[activeVariant];
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="max-w-[1440px] mx-auto px-margin pt-28 pb-20"
+      className="pt-[100px] pb-20"
     >
-      {/* Breadcrumbs */}
-      <nav className="flex items-center space-x-2 label-caps text-secondary mb-8">
-        <button onClick={onBack} className="hover:text-primary transition-colors cursor-pointer uppercase">Products</button>
-        <ChevronRight size={14} />
-        <span className="hover:text-primary transition-colors cursor-pointer uppercase">Inverters</span>
-        <ChevronRight size={14} />
-        <span className="text-zinc-900 font-bold uppercase">FRENIC-ACE</span>
-      </nav>
-
-      {/* Hero Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 mb-20 items-start">
-        {/* Product Image */}
-        <div className="lg:col-span-5 bg-white border border-zinc-200 p-8 md:p-20 flex items-center justify-center relative overflow-hidden group rounded-sm shadow-sm">
-          <img 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiuE0ki9gWbnZR2U8HCFYEAlifAOT59gn_Gaez6bV0HwsGa6VHoSBTWyAp4oevhlIuWeThp4Nio0eKwgo9nSAsYLo5_AT7Ef7OhnwnNk2MvUwVMI8HCvQgB_9zYUCdeOcXuwuTcBRoiJHp4SpsF9X1ADssv5HmCtCT-AD0HzmAKeaF29omO7IRJH-mD6a1ZfdlhPU1E-CaipL9zrUB6nx2nkaVhOYPpZvxC7vBwBU1LPaegzQMb1Jwp9J46f4FORKJcukl_DTyaYI" 
-            alt="Fuji Electric FRENIC-Ace Inverter" 
-            className="max-w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105"
-          />
-          <div className="absolute bottom-4 right-4 bg-primary text-white px-4 py-1 label-caps text-[10px]">
-            Premium Industrial Grade
-          </div>
-        </div>
-
-        {/* Product Summary */}
-        <div className="lg:col-span-7">
-          <span className="text-primary label-caps mb-2 block tracking-widest uppercase">Fuji Electric</span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl text-zinc-900 mb-6 font-headline">FRENIC-Ace Inverter</h1>
-          <p className="text-lg text-secondary mb-10 max-w-2xl leading-relaxed">
-            The next generation of high-performance variable frequency drives. The ACE series delivers unparalleled flexibility, energy efficiency, and durability for modern industrial motor control systems.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div className="border-l-4 border-primary pl-4 py-2 bg-zinc-50">
-              <span className="block label-caps text-secondary text-[10px] mb-1">Series</span>
-              <span className="block text-xl font-headline font-bold text-zinc-900 uppercase">FRENIC-Ace</span>
-            </div>
-            <div className="border-l-4 border-primary pl-4 py-2 bg-zinc-50">
-              <span className="block label-caps text-secondary text-[10px] mb-1">Capacity</span>
-              <span className="block text-xl font-headline font-bold text-zinc-900 uppercase">0.1 - 630kW</span>
-            </div>
-            <div className="border-l-4 border-primary pl-4 py-2 bg-zinc-50">
-              <span className="block label-caps text-secondary text-[10px] mb-1">Phase</span>
-              <span className="block text-xl font-headline font-bold text-zinc-900 uppercase">1 / 3 Phase</span>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-4 items-center">
-            <button className="bg-primary text-white px-10 py-5 label-caps tracking-widest hover:bg-primary-container transition-all flex items-center gap-3 shadow-lg shadow-primary/20 active:scale-95">
-              <span>Configure Part Number</span>
-              <Settings size={18} />
-            </button>
-            <button className="border border-zinc-900 text-zinc-900 px-10 py-5 label-caps tracking-widest hover:bg-zinc-900 hover:text-white transition-all flex items-center gap-3 active:scale-95">
-              <span>Download Brochure</span>
-              <Download size={18} />
-            </button>
-          </div>
+      {/* Breadcrumb */}
+      <div className="border-b border-surface-container bg-white">
+        <div className="max-w-[1440px] mx-auto px-margin py-3 flex items-center gap-2 label-caps text-[11px] text-secondary">
+          <button onClick={onBack} className="hover:text-primary transition-colors">Products</button>
+          <ChevronRight size={12} />
+          <span className="hover:text-primary transition-colors cursor-pointer">
+            {CATEGORY_LABELS[product.category]}
+          </span>
+          <ChevronRight size={12} />
+          <span className="text-on-surface font-bold">{product.name}</span>
         </div>
       </div>
 
-      {/* Technical Specifications Section */}
-      <section className="mb-20">
-        <div className="flex items-baseline justify-between mb-8 border-b-2 border-zinc-900 pb-2">
-          <h2 className="text-2xl font-headline font-black uppercase tracking-tight">Technical Specifications</h2>
-          <span className="label-caps text-secondary text-[10px]">Units in Metric (SI)</span>
+      <div className="max-w-[1440px] mx-auto px-margin pt-12 pb-10">
+        {/* Hero Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 mb-16 items-start">
+          {/* Image Panel */}
+          <div className="lg:col-span-5">
+            <div className="bg-white border border-surface-container p-10 flex items-center justify-center relative overflow-hidden group min-h-[340px]">
+              <img
+                src={variant?.image ?? product.mainImage}
+                alt={variant?.name ?? product.name}
+                className="max-h-64 max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute bottom-3 right-3 bg-primary text-white px-3 py-1 label-caps text-[10px]">
+                {product.brand}
+              </div>
+            </div>
+
+            {/* Variant Thumbnails */}
+            {product.variants.length > 1 && (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {product.variants.map((v, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveVariant(i)}
+                    className={`border p-2 transition-colors ${
+                      activeVariant === i
+                        ? 'border-deep-blue bg-surface-container-low'
+                        : 'border-surface-container hover:border-secondary'
+                    }`}
+                  >
+                    <img
+                      src={v.image}
+                      alt={v.name}
+                      className="w-12 h-12 object-contain"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Product Summary */}
+          <div className="lg:col-span-7">
+            <span className="label-caps text-primary block mb-2 tracking-widest">{product.brand}</span>
+            <h1 className="text-3xl md:text-5xl text-on-surface font-headline font-black tracking-tight mb-2">
+              {product.name}
+            </h1>
+            <p className="text-secondary font-headline font-semibold text-lg mb-6">{product.tagline}</p>
+
+            {product.standard && (
+              <div className="inline-block border border-surface-container bg-surface-container-low px-4 py-2 mb-6">
+                <span className="label-caps text-[10px] text-secondary">Standard: </span>
+                <span className="label-caps text-[10px] text-on-surface">{product.standard}</span>
+              </div>
+            )}
+
+            <p className="text-secondary leading-relaxed mb-8">{product.description}</p>
+
+            {/* Active Variant Specs */}
+            {variant?.specs && variant.specs.length > 0 && (
+              <div className="mb-8">
+                <h4 className="label-caps text-[11px] text-deep-blue mb-3 border-b border-surface-container pb-2">
+                  {variant.name} — Specifications
+                </h4>
+                <div className="grid grid-cols-1 divide-y divide-surface-container">
+                  {variant.specs.map(s => (
+                    <div key={s.label} className="flex justify-between py-3">
+                      <dt className="label-caps text-[10px] text-secondary">{s.label}</dt>
+                      <dd className="text-sm font-semibold text-on-surface">{s.value}</dd>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="flex flex-wrap gap-4">
+              <button className="bg-primary text-white px-10 py-4 label-caps hover:bg-primary-container transition-all active:scale-95">
+                CONFIGURE / GET A QUOTE
+              </button>
+              {product.brochureLabel && (
+                <button className="border border-on-surface text-on-surface px-8 py-4 label-caps hover:bg-on-surface hover:text-white transition-all active:scale-95 flex items-center gap-2">
+                  <Download size={16} />
+                  {product.brochureLabel}
+                </button>
+              )}
+            </div>
+          </div>
         </div>
 
-        <div className="space-y-16">
-          {/* Table */}
-          <div>
-            <h3 className="text-xl font-headline font-bold mb-6 flex items-center gap-3">
-              <span className="w-2 h-6 bg-primary inline-block"></span>
-              Standard 3-Phase Model (400V Class)
-            </h3>
-            <div className="overflow-x-auto border border-zinc-200 rounded-sm">
+        {/* Features */}
+        <section className="mb-16">
+          <div className="flex items-baseline justify-between mb-6 border-b-2 border-on-surface pb-2">
+            <h2 className="text-xl font-headline font-black uppercase tracking-tight">Key Features & Advantages</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {product.features.map((feat, i) => (
+              <div key={i} className="flex items-start gap-3 bg-surface-container-low border border-surface-container p-5">
+                <CheckCircle className="text-primary flex-shrink-0 mt-0.5" size={16} strokeWidth={1.5} />
+                <p className="text-sm text-on-surface leading-relaxed">{feat}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* All Variants / Models in Stock */}
+        {product.variants.length > 1 && (
+          <section className="mb-16">
+            <div className="flex items-baseline justify-between mb-6 border-b-2 border-on-surface pb-2">
+              <h2 className="text-xl font-headline font-black uppercase tracking-tight">Available Models</h2>
+              <span className="label-caps text-[10px] text-secondary">{product.variants.length} configurations</span>
+            </div>
+            <div className="overflow-x-auto border border-surface-container">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-zinc-950 text-white label-caps text-[10px]">
-                    <th className="px-6 py-4 border-r border-zinc-800">Model Number</th>
-                    <th className="px-6 py-4 border-r border-zinc-800">Output Capacity (kW)</th>
-                    <th className="px-6 py-4 border-r border-zinc-800">Rated Current (A)</th>
-                    <th className="px-6 py-4">Dimensions (W x H x D mm)</th>
+                  <tr className="bg-deep-blue text-white label-caps text-[10px]">
+                    <th className="px-5 py-4 border-r border-white/10">Model / Configuration</th>
+                    {product.variants[0]?.specs?.map(s => (
+                      <th key={s.label} className="px-5 py-4 border-r border-white/10">{s.label}</th>
+                    ))}
                   </tr>
                 </thead>
-                <tbody className="text-sm font-medium">
-                  {specs.map((item, i) => (
-                    <tr key={i} className={`border-b border-zinc-100 transition-colors hover:bg-zinc-50 ${i % 2 === 1 ? 'bg-zinc-50/50' : ''}`}>
-                      <td className="px-6 py-4 border-r border-zinc-100 font-bold font-headline text-zinc-900">{item.model}</td>
-                      <td className="px-6 py-4 border-r border-zinc-100 text-secondary">{item.capacity}</td>
-                      <td className="px-6 py-4 border-r border-zinc-100 text-secondary">{item.current}</td>
-                      <td className="px-6 py-4 text-xs font-mono text-zinc-400 tracking-tight">{item.dimensions}</td>
+                <tbody>
+                  {product.variants.map((v, i) => (
+                    <tr
+                      key={i}
+                      onClick={() => setActiveVariant(i)}
+                      className={`border-b border-surface-container cursor-pointer transition-colors ${
+                        activeVariant === i ? 'bg-surface-container-low' : 'hover:bg-surface-container-low'
+                      }`}
+                    >
+                      <td className="px-5 py-4 font-bold font-headline text-on-surface text-sm border-r border-surface-container">
+                        {v.name}
+                      </td>
+                      {v.specs?.map(s => (
+                        <td key={s.label} className="px-5 py-4 text-sm text-secondary border-r border-surface-container">
+                          {s.value}
+                        </td>
+                      ))}
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-          </div>
+          </section>
+        )}
 
-          {/* Bento Features */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-8 border border-zinc-200 bg-white rounded-sm hover:border-primary transition-colors group">
-              <Filter className="text-primary mb-6 group-hover:scale-110 transition-transform" size={32} />
-              <h4 className="text-xl font-headline font-bold mb-3">EMC Filter Built-in</h4>
-              <p className="text-zinc-500 leading-relaxed">Reduces peripheral equipment noise interference. Complies with EN61800-3 Category C2/C3.</p>
+        {/* Stock Items */}
+        {product.stockItems && product.stockItems.length > 0 && (
+          <section className="mb-16">
+            <div className="flex items-baseline justify-between mb-6 border-b-2 border-on-surface pb-2">
+              <h2 className="text-xl font-headline font-black uppercase tracking-tight">Items in Stock</h2>
             </div>
-            <div className="p-8 border border-zinc-200 bg-white rounded-sm hover:border-primary transition-colors group">
-              <Cpu className="text-primary mb-6 group-hover:scale-110 transition-transform" size={32} />
-              <h4 className="text-xl font-headline font-bold mb-3">Logic Customization</h4>
-              <p className="text-zinc-500 leading-relaxed">Built-in PLC functions allow for complex sequence control without external controllers.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {product.stockItems.map((item, i) => (
+                <div key={i} className="flex items-start gap-3 border border-surface-container p-4 bg-white">
+                  <span className="flex-shrink-0 w-5 h-5 bg-primary text-white label-caps text-[9px] flex items-center justify-center">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <p className="text-sm text-on-surface">{item}</p>
+                </div>
+              ))}
             </div>
-            <div className="p-8 border border-zinc-200 bg-zinc-950 text-white rounded-sm group">
-              <ShieldCheck className="text-primary mb-6 group-hover:scale-110 transition-transform" size={32} />
-              <h4 className="text-xl font-headline font-bold mb-3">Safety Performance</h4>
-              <p className="text-zinc-400 leading-relaxed">STO (Safe Torque Off) function compliant with EN ISO 13849-1, SIL3, PLe.</p>
-            </div>
-          </div>
+          </section>
+        )}
 
-          {/* Data Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div className="space-y-8">
-              <h3 className="text-xl font-headline font-bold border-l-4 border-primary pl-4 py-1">Environmental Specifications</h3>
-              <div className="grid grid-cols-1 divide-y divide-zinc-100">
-                {[
-                  { label: 'Ambient Temperature', value: '-10°C to +50°C (Max 60°C with derating)' },
-                  { label: 'Ambient Humidity', value: '5 to 95% RH (Non-condensing)' },
-                  { label: 'Altitude', value: 'Max 3000m (Derating above 1000m)' },
-                  { label: 'Protection Degree', value: 'IP20 / UL Type 1 Enclosure' },
-                ].map((spec, i) => (
-                  <div key={i} className="flex justify-between py-4 group">
-                    <dt className="label-caps text-[10px] text-secondary group-hover:text-primary transition-colors">{spec.label}</dt>
-                    <dd className="text-sm font-medium text-zinc-900">{spec.value}</dd>
+        {/* Quote Block */}
+        <section className="bg-surface-container p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 mb-16">
+          <div>
+            <h3 className="text-2xl font-headline font-bold mb-2 text-on-surface">Need a custom configuration?</h3>
+            <p className="text-secondary text-sm max-w-md">Speak with our specialist engineers for system integration support and bulk procurement schedules.</p>
+          </div>
+          <div className="flex flex-wrap gap-4">
+            <button className="bg-primary text-white px-8 py-4 label-caps hover:bg-primary-container transition-all active:scale-95">Talk to an Expert</button>
+            <button className="border border-surface-container-high text-on-surface px-8 py-4 label-caps hover:bg-surface-container transition-all active:scale-95">Download Brochure</button>
+          </div>
+        </section>
+
+        {/* Related Products */}
+        {related.length > 0 && (
+          <section>
+            <div className="flex items-baseline justify-between mb-6 border-b-2 border-on-surface pb-2">
+              <h2 className="text-xl font-headline font-black uppercase tracking-tight">Related Products</h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {related.map(rel => (
+                <div
+                  key={rel.id}
+                  onClick={() => onSelectProduct(rel.id)}
+                  className="bg-white border border-surface-container hover:border-deep-blue hover:shadow-md transition-all cursor-pointer group flex flex-col"
+                >
+                  <div className="h-40 bg-surface-container-low border-b border-surface-container flex items-center justify-center p-6">
+                    <img
+                      src={rel.mainImage}
+                      alt={rel.name}
+                      className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                    />
                   </div>
-                ))}
-              </div>
-            </div>
-            <div className="space-y-8">
-              <h3 className="text-xl font-headline font-bold border-l-4 border-primary pl-4 py-1">Network Communications</h3>
-              <div className="grid grid-cols-1 divide-y divide-zinc-100">
-                {[
-                  { label: 'Standard Port', value: 'RS-485 (Modbus RTU)' },
-                  { label: 'Optional Cards', value: 'CC-Link, DeviceNet, PROFIBUS-DP' },
-                  { label: 'Ethernet Options', value: 'PROFINET, EtherNet/IP, EtherCAT' },
-                  { label: 'USB Connectivity', value: 'Mini-B Port for PC Loader Tool' },
-                ].map((spec, i) => (
-                  <div key={i} className="flex justify-between py-4 group">
-                    <dt className="label-caps text-[10px] text-secondary group-hover:text-primary transition-colors">{spec.label}</dt>
-                    <dd className="text-sm font-medium text-zinc-900">{spec.value}</dd>
+                  <div className="p-5">
+                    <span className="label-caps text-[10px] text-primary block mb-1">{rel.brand}</span>
+                    <h4 className="font-headline font-bold text-on-surface text-sm">{rel.name}</h4>
+                    <p className="text-xs text-secondary mt-1 mb-3">{rel.tagline}</p>
+                    <span className="label-caps text-[11px] text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
+                      View Details <ArrowRight size={12} />
+                    </span>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Quote Block */}
-      <section className="bg-zinc-100 p-8 md:p-16 flex flex-col md:flex-row items-center justify-between rounded-sm">
-        <div className="mb-8 md:mb-0">
-          <h3 className="text-3xl font-headline font-bold mb-3 text-zinc-900">Need a custom configuration?</h3>
-          <p className="text-zinc-600 max-w-md">Speak with our specialist engineers for system integration support and bulk procurement schedules.</p>
-        </div>
-        <div className="flex flex-wrap gap-4">
-          <button className="bg-primary text-white px-8 py-4 label-caps tracking-widest hover:bg-primary-container transition-all active:scale-95 shadow-lg shadow-primary/20">Talk to an Expert</button>
-          <button className="bg-white border border-zinc-300 text-zinc-900 px-8 py-4 label-caps tracking-widest hover:bg-zinc-50 transition-all active:scale-95">View Case Studies</button>
-        </div>
-      </section>
+          </section>
+        )}
+      </div>
     </motion.div>
   );
 }
