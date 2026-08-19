@@ -11,6 +11,20 @@ npm run lint      # Type-check with tsc --noEmit (no separate test suite)
 npm run preview   # Preview production build
 ```
 
+## Browser Testing Notes
+
+**If a Claude-in-Chrome automated click seems to "not work" (page content doesn't visually swap), check `document.hidden` before assuming a code bug.**
+
+Symptom: clicking a button via automation (`find` + click-by-ref, or a JS `.click()`/`dispatchEvent`) fires every native DOM event correctly (`pointerdown`/`mousedown`/`click` all confirmed via `addEventListener`), and React state genuinely updates (confirmable via a sibling component reacting to it, e.g. `Header`'s active nav tab changing), but the `AnimatePresence`-gated page content in `App.tsx` stays frozen on the old page indefinitely.
+
+Root cause: in an automated/backgrounded tab, `document.hidden` is `true` (`document.visibilityState === 'hidden'`, `document.hasFocus() === false`). Chrome pauses/heavily throttles `requestAnimationFrame` for hidden tabs, and Framer Motion's transitions — including every `AnimatePresence` page swap in `App.tsx` — depend entirely on rAF. With `mode="wait"`, the incoming page never mounts until the outgoing page's exit animation completes, which never happens if rAF is frozen. The outer `motion.div`'s `opacity` can be seen stuck at its `initial` value (e.g. `0`) indefinitely via `getComputedStyle` — not just "still animating," genuinely never started.
+
+Diagnostic: run `document.hidden`, `document.visibilityState`, `document.hasFocus()` via `javascript_exec`. If `hidden: true`, this is the cause — don't start editing app code in response to this symptom.
+
+Workaround: a real `computer.left_click` at actual screen coordinates (not a ref-based click, not a JS-dispatched click) appears to bring the tab to focus as a side effect, unfreezing rAF and letting the transition complete; `computer.screenshot` also appears to force a visible repaint. When verifying navigation/page-transition behavior, prefer coordinate clicks taken from a *freshly captured* screenshot each time — an in-progress animation's `translateY`/`opacity` can shift element positions between screenshots, causing stale coordinates to miss.
+
+This only affects browser-automation tooling — a real visitor's tab is always visible/focused when they click something, so this can never happen for actual users.
+
 ## Project Identity
 
 This is the **T'sys Industrial Controls Inc.** website — an industrial B2B supplier of HIMEL low-voltage electrical products and Fuji Electric variable frequency drives. The company also fabricates custom switchgear, panelboards, and busway systems.
@@ -129,8 +143,9 @@ Quick-reference checklist of everything done so far, for reuse in future session
 10. **Cleanup pass** — removed a non-functional mobile search button; corrected office hours (8am → 9am); added a Facebook icon to the footer social link (already global across all pages).
 11. **Full documentation pass + V1 tag + branch promotion** — this summary section added; `origin/main`'s prior tip tagged `V1` (pushed) and preserved; the `update-logo-contact-info` branch (all work above) force-pushed to become the new `main` on GitHub.
 12. **CI/CD pipeline live** — GitHub Actions deploys `main` to a new, independent S3 bucket (`tsys-study-dev`) behind CloudFront, reachable at **https://study-dev.tsys.com.ph** (Route 53 CNAME, reused existing wildcard ACM cert). Fully independent from the production site/bucket/distribution. See Session 12 below for all resource IDs.
+13. **Homepage hero buttons wired up** — "Explore Products" navigates to the Products page; "Download Catalog" (no real catalog file existed anywhere) repurposed as "Get a Quote" → Contact page, matching the CTA pattern used everywhere else. See the new "Browser Testing Notes" section above — a lengthy false-alarm debugging session on this task's verification led to identifying and documenting the `document.hidden`/rAF-freeze browser-automation artifact.
 
-**Open items / not yet done** (flagged in various sessions, still outstanding as of Session 12):
+**Open items / not yet done** (flagged in various sessions, still outstanding as of Session 13):
 - Contact form has never been tested end-to-end against the live AWS endpoint (deliberately, to avoid spamming T'sys's real inbox with test data) — a human should do one real test submission.
 - Legacy products (everything except the 4 with real `brochureUrl`s) still have non-functional brochure buttons if `brochureLabel` is set without a matching PDF.
 - `induction-motors`, `transfer-switch`, and `synchronizing-switchgear` categories are still "Coming Soon" placeholders with zero products.
@@ -253,3 +268,12 @@ Notes:
 - This bucket/distribution is entirely independent from production (`tsys-website-prod` bucket, `ap-northeast-1`, distribution `E1ZQEG5WQOCWTK`, serving `tsys.com.ph`/`www.tsys.com.ph`) — no shared resources, so nothing here can affect the live production site.
 - SPA routing: CloudFront's custom error responses map both `403` and `404` → `/index.html` with a `200`, since this app has no server-side routing (all navigation is client-side state in `App.tsx`).
 - First deploy verified end-to-end: S3 has the built files, CloudFront invalidation completed, both `https://d3fk9dfva167rg.cloudfront.net` and `https://study-dev.tsys.com.ph` return `200` with the correct page title.
+
+### Session 13 — Homepage hero buttons wired up
+
+`Hero.tsx` had two dead buttons (no `onClick` at all):
+- `onExploreProducts` prop added → `navigate({ page: 'products' })`, wired from `App.tsx`.
+- "Download Catalog" had no real file to point to — checked the old Joomla site and the SpiceWorx client materials folder (`/Users/ruelabion/Documents/SpiceWorx/LJGroup/Tsys/`), only per-product datasheets exist, no general company catalog PDF. Relabeled to **"Get a Quote"** and wired to `onGetQuote` → `navigate({ page: 'form' })`, matching the CTA already used everywhere else on the site rather than linking a file that doesn't exist.
+- Deployed via the CI/CD pipeline from Session 12; verified live on `study-dev.tsys.com.ph`.
+
+Verifying this in the browser triggered an extended, ultimately-false-alarm debugging session: clicks appeared not to navigate, despite the code being correct. Root-caused to the automated tab having `document.hidden === true`, which freezes Framer Motion's `requestAnimationFrame`-driven `AnimatePresence` transitions — see the new "Browser Testing Notes" section near the top of this file for the full diagnostic and workaround, so this doesn't need to be re-discovered from scratch next time.
