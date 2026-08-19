@@ -1,4 +1,4 @@
-import { Facebook } from 'lucide-react';
+import { Facebook, Linkedin } from 'lucide-react';
 
 const quickLinks = ['Home', 'Products', 'Services', 'About Us', 'Downloads', 'Contact Us'];
 const productCategories = [
@@ -34,16 +34,28 @@ export default function Footer({
                 <div className="text-base font-black font-headline leading-snug">T'sys Industrial Controls Inc.</div>
               </div>
               <p className="text-white/60 text-sm leading-relaxed mb-5">Commercial &amp; Industrial Equipment Supplier</p>
-              <a
-                href="https://www.facebook.com/tsysindustrial/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="T'sys Industrial Controls on Facebook"
-                className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm underline underline-offset-2"
-              >
-                <Facebook size={16} strokeWidth={1.5} />
-                Facebook
-              </a>
+              <div className="flex items-center gap-5">
+                <a
+                  href="https://www.facebook.com/tsysindustrial/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="T'sys Industrial Controls on Facebook"
+                  className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm underline underline-offset-2"
+                >
+                  <Facebook size={16} strokeWidth={1.5} />
+                  Facebook
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/tsys-industrial-controls-inc-central-luzon-2b7302371/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="T'sys Industrial Controls on LinkedIn"
+                  className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm underline underline-offset-2"
+                >
+                  <Linkedin size={16} strokeWidth={1.5} />
+                  LinkedIn
+                </a>
+              </div>
             </div>
 
             <div>
