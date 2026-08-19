@@ -63,7 +63,10 @@ export default function App() {
           {/* ── HOME ─────────────────────────────────────────────── */}
           {state.page === 'home' && (
             <motion.div key="home" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
-              <Hero />
+              <Hero
+                onExploreProducts={() => navigate({ page: 'products' })}
+                onGetQuote={() => navigate({ page: 'form' })}
+              />
 
               <CategoryGrid
                 onNavigateCategory={category => navigate({ page: 'products', category })}

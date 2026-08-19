@@ -1,7 +1,13 @@
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 
-export default function Hero() {
+export default function Hero({
+  onExploreProducts,
+  onGetQuote,
+}: {
+  onExploreProducts: () => void;
+  onGetQuote: () => void;
+}) {
   return (
     <section className="relative min-h-[560px] md:min-h-[680px] flex items-center overflow-hidden mt-[100px]">
       <div className="absolute inset-0 z-0">
@@ -34,12 +40,18 @@ export default function Hero() {
             From industrial components to complete power and control systems, T’sys supports commercial and industrial projects with reliable engineering, fabrication, and supply.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button className="bg-primary text-white px-8 py-4 label-caps flex items-center gap-2 hover:bg-primary-container transition-all active:scale-95">
+            <button
+              onClick={onExploreProducts}
+              className="bg-primary text-white px-8 py-4 label-caps flex items-center gap-2 hover:bg-primary-container transition-all active:scale-95"
+            >
               EXPLORE PRODUCTS
               <ArrowRight size={18} />
             </button>
-            <button className="border border-white/50 text-white px-8 py-4 label-caps hover:bg-white/10 transition-all active:scale-95">
-              DOWNLOAD CATALOG
+            <button
+              onClick={onGetQuote}
+              className="border border-white/50 text-white px-8 py-4 label-caps hover:bg-white/10 transition-all active:scale-95"
+            >
+              GET A QUOTE
             </button>
           </div>
         </motion.div>
