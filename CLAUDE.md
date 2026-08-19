@@ -127,12 +127,14 @@ Quick-reference checklist of everything done so far, for reuse in future session
 8. **Footer year, tel/mailto links, cursor bug** — dynamic copyright year; phone/email in the header top bar and Contact page are real `tel:`/`mailto:` links; root-caused and fixed a site-wide missing-hand-cursor bug (Tailwind v4 Preflight resets `<button>` cursor to `default`).
 9. **Contact form wired to the old site's real backend** — discovered the old site posted to a live AWS API Gateway/Lambda endpoint (not a dead Joomla form); replicated the exact submission behavior, payload shape, honeypot, and timing-based anti-spam field.
 10. **Cleanup pass** — removed a non-functional mobile search button; corrected office hours (8am → 9am); added a Facebook icon to the footer social link (already global across all pages).
+11. **Full documentation pass + V1 tag + branch promotion** — this summary section added; `origin/main`'s prior tip tagged `V1` (pushed) and preserved; the `update-logo-contact-info` branch (all work above) force-pushed to become the new `main` on GitHub.
+12. **CI/CD pipeline live** — GitHub Actions deploys `main` to a new, independent S3 bucket (`tsys-study-dev`) behind CloudFront, reachable at **https://study-dev.tsys.com.ph** (Route 53 CNAME, reused existing wildcard ACM cert). Fully independent from the production site/bucket/distribution. See Session 12 below for all resource IDs.
 
-**Open items / not yet done** (flagged in various sessions, still outstanding as of Session 10):
+**Open items / not yet done** (flagged in various sessions, still outstanding as of Session 12):
 - Contact form has never been tested end-to-end against the live AWS endpoint (deliberately, to avoid spamming T'sys's real inbox with test data) — a human should do one real test submission.
 - Legacy products (everything except the 4 with real `brochureUrl`s) still have non-functional brochure buttons if `brochureLabel` is set without a matching PDF.
 - `induction-motors`, `transfer-switch`, and `synchronizing-switchgear` categories are still "Coming Soon" placeholders with zero products.
-- CI/CD setup — mentioned by the user as the next planned initiative, not yet started.
+- No staging→production promotion path yet — `study-dev.tsys.com.ph` is a separate environment from the live `tsys.com.ph`/`www.tsys.com.ph` production site; nothing here currently pushes to production.
 
 ---
 
@@ -229,4 +231,25 @@ The old site's contact form (`contact-us.html` + `assets/contact-form.js`) was a
 ### Session 11 — Full documentation pass, V1 tag, branch promotion
 - Added the "Completed Work Summary" section above, consolidating Sessions 1–10 into a scannable checklist for future reuse.
 - Discovered `origin/main` had diverged from local `main`/this branch with one commit not present here (a README ownership note added directly on GitHub: the old `tsys-demo.spiceworx.com` template design is now owned by powerboxsolutions.com, unrelated to T'sys). Preserved that note's content manually in `README.md` (an automated merge/cherry-pick would have conflicted, since Session 3 already fully rewrote README.md away from the AI Studio template it was written against).
-- Tagged the prior `main` (i.e. `origin/main`'s tip before this promotion) as `V1`, then made this branch (`update-logo-contact-info`) the new `main`.
+- Tagged the prior `main` (i.e. `origin/main`'s tip before this promotion) as `V1`, then made this branch (`update-logo-contact-info`) the new `main`. Pushed both: `V1` tag pushed first, then `main` force-pushed (with explicit user confirmation) to overwrite the old divergent `origin/main`.
+
+### Session 12 — CI/CD: GitHub Actions → S3 → CloudFront → Route 53
+
+Live at **https://study-dev.tsys.com.ph** (also reachable directly via the CloudFront domain below). AWS account `033858994314`, profile `sciadmin`.
+
+| Resource | Value |
+|---|---|
+| S3 bucket | `tsys-study-dev` (ap-southeast-1, private — CloudFront OAC is the only entry point, all public access blocked) |
+| CloudFront distribution | `E183JGTQTHVO9X` → `d3fk9dfva167rg.cloudfront.net` |
+| Origin Access Control | `E2PCHJR8J3RHXX` (`tsys-study-dev-oac`) |
+| ACM certificate | Reused the existing `*.tsys.com.ph` wildcard cert (`us-east-1`, `arn:...certificate/f88f10f3-3d76-4dd7-abb4-8ec786edd5de`) — already issued, was unused, no new validation needed |
+| Route 53 | CNAME `study-dev.tsys.com.ph` → CloudFront domain, in the `tsys.com.ph` hosted zone (`Z31WA5GARGN3P`) |
+| IAM deploy user | `github-deploy-tsys-study-dev` — inline policy scoped to only this bucket (`s3:PutObject/DeleteObject/GetObject/ListBucket`) and only this CloudFront distribution (`cloudfront:CreateInvalidation`); credentials live only in GitHub Actions secrets, never committed |
+| GitHub Actions secrets | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `CLOUDFRONT_DISTRIBUTION_ID` (repo: `ruelabion/tsys-study1`) |
+
+Workflow: `.github/workflows/deploy.yml` — on every push to `main`, runs `npm ci && npm run build`, syncs `dist/` to S3 (`--delete`, static assets cached `max-age=86400`, `index.html` explicitly `no-cache` so browsers always revalidate and pick up new deploys), then invalidates the CloudFront distribution (`/*`).
+
+Notes:
+- This bucket/distribution is entirely independent from production (`tsys-website-prod` bucket, `ap-northeast-1`, distribution `E1ZQEG5WQOCWTK`, serving `tsys.com.ph`/`www.tsys.com.ph`) — no shared resources, so nothing here can affect the live production site.
+- SPA routing: CloudFront's custom error responses map both `403` and `404` → `/index.html` with a `200`, since this app has no server-side routing (all navigation is client-side state in `App.tsx`).
+- First deploy verified end-to-end: S3 has the built files, CloudFront invalidation completed, both `https://d3fk9dfva167rg.cloudfront.net` and `https://study-dev.tsys.com.ph` return `200` with the correct page title.
