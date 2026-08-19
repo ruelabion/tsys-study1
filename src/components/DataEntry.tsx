@@ -2,10 +2,10 @@ import { Send, MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { motion } from 'motion/react';
 
 const contactInfo = [
-  { icon: Phone, label: 'Telephone', value: '(02) 8687 3006' },
-  { icon: Phone, label: 'Mobile', value: '0917 563 1925' },
-  { icon: Mail, label: 'Email', value: 'sales@tsys.com.ph' },
-  { icon: MapPin, label: 'Address', value: "Unit 4, 2F LRC Bldg., 179 Mayon St., Brgy. Silangan, Quezon City, Philippines" },
+  { icon: Phone, label: 'Telephone', value: '(02) 8351-3225 / 8351-3495 / 8351-7189 / 8352-3314' },
+  { icon: Phone, label: 'Mobile', value: '0917 539 5654' },
+  { icon: Mail, label: 'Email', value: 'manager@tsys.com.ph' },
+  { icon: MapPin, label: 'Address', value: "1F Torre Venezia Bldg., Timog Avenue cor. Sct. Santiago St., Brgy. Laging Handa, Quezon City, Philippines 1103" },
   { icon: Clock, label: 'Office Hours', value: 'Monday – Friday, 8:00 AM – 5:00 PM' },
 ];
 
@@ -157,7 +157,7 @@ export default function DataEntry() {
             {/* Deep Blue strip */}
             <div className="mt-8 bg-deep-blue text-white p-6">
               <p className="label-caps text-[10px] text-white/60 mb-2">Prefer to talk?</p>
-              <p className="font-headline font-bold text-xl">(02) 8687 3006</p>
+              <p className="font-headline font-bold text-xl">(02) 8351-3225</p>
               <p className="text-white/60 text-xs mt-1">Mon – Fri, 8:00 AM – 5:00 PM</p>
             </div>
           </motion.div>

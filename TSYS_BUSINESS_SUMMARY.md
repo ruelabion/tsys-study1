@@ -2,7 +2,7 @@
 
 ## Company Overview
 
-**T'sys Industrial Controls Inc.** is a Philippine industrial B2B supplier and electrical equipment fabricator established in **2002**. It is a corporate affiliate of **Total Power Box Solution Inc.** and operates as one of the country's leading fabrication and manufacturing companies for electrical and power control systems.
+**T'sys Industrial Controls Inc.** is a Philippine industrial B2B supplier and electrical equipment fabricator established in **2002**. It is a corporate affiliate of **Total Power Box Solution Inc.** and operates as one of the country's leading fabrication and manufacturing companies for electrical and power control systems. The company categorizes itself as a **"Commercial & Industrial Equipment Supplier"** on its official Facebook page (facebook.com/tsysindustrial).
 
 The company serves commercial and industrial clients, providing end-to-end capability from product supply to custom engineering, design, and installation.
 
@@ -10,9 +10,9 @@ The company serves commercial and industrial clients, providing end-to-end capab
 
 | | |
 |---|---|
-| **Phone** | (02) 8687 3006 / 0917 563 1925 |
-| **Email** | sales@tsys.com.ph |
-| **Address** | Unit 4, 2F LRC Bldg., 179 Mayon St., Brgy. Silangan, Quezon City, Philippines |
+| **Phone** | (02) 8351-3225 / 8351-3495 / 8351-7189 / 8352-3314 / 0917 539 5654 |
+| **Email** | manager@tsys.com.ph |
+| **Address** | 1F Torre Venezia Bldg., Timog Avenue cor. Sct. Santiago St., Brgy. Laging Handa, Quezon City, Philippines 1103 |
 
 ---
 
@@ -41,36 +41,9 @@ Fabrication is performed by a team of certified electrical engineers using advan
 
 ## Product Catalog
 
-### Category 1 — Electrical Control (HIMEL Brand)
+Categories below follow the product list published on T'sys's official Facebook page (facebook.com/tsysindustrial), which lists 8 categories: Variable Frequency Drives (Fuji Electric), Induction Motors, Instrumentation Products, Low/Medium Voltage Switchgear, Automatic/Manual Transfer Switch, Panelboards/Meter Centers, Automatic Synchronizing Switchgear, and Circuit Breaker. Detailed spec sheets exist for the first four groups below; the remaining four are confirmed product lines with no detailed spec data yet (shown as "Coming Soon" on the website).
 
-These are low-voltage protective and switching devices used in motor control centers, distribution panels, and industrial control cabinets.
-
-#### Miniature Circuit Breaker — HDB6s / HDB9 Series
-- **Standard**: IEC 60898-1
-- Protection against overload and short-circuit currents
-- Available in 1P, 2P, 3P, and 4P configurations
-- Current range: 1–63A
-- Breaking capacity: up to 10 kAIC (HDB9H) or 6/4.5 kAIC (HDB6s)
-- Trip curves B, C, and D
-- Class 3 current energy-limiting; Quick Closed technology (20,000 mechanical / 10,000 electrical operations)
-- Temperature rated: −30°C to +70°C
-
-#### Manual Motor Starter + Contactor — HDP6 Series
-- **Standard**: IEC 947-1, IEC 947-2, IEC 947-4-1
-- Combines circuit breaker and thermal overload relay in a single unit
-- Paired with **HDC6 AC Magnetic Contactors** (9–95A and 115–630A ranges) and **HDR6 Thermal Overload Relay**
-- Designed for direct motor protection in low-frequency switching applications
-
-#### Molded Case & Air Circuit Breakers — HDM6L MCCB / HDW6 ACB Series
-- **Standard**: IEC 60947-2
-- **MCCB (HDM6s)**: 16–800AT in 100AF / 250AF / 400AF / 630AF / 800AF frames; breaking capacity up to 50 kAIC @ 400V
-- **ACB (HDW6)**: 630–6300AT in 2000AF / 3200AF / 6300AF frames; breaking capacity up to 120 kAIC; available fixed or drawout, manual or motorized
-- Used for main incomer and bus coupler applications in large distribution panels
-- Rated insulation voltage: AC 800V; impulse withstand: 8 kV
-
----
-
-### Category 2 — Industrial Automation (Fuji Electric Brand)
+### Category — Variable Frequency Drives (Fuji Electric Brand)
 
 Variable Frequency Drives (VFDs / inverters) for motor speed control and energy savings across industrial applications.
 
@@ -106,9 +79,21 @@ Variable Frequency Drives (VFDs / inverters) for motor speed control and energy 
 
 ---
 
-### Category 3 — Panel & System Components (T'sys / Total Power Box Brand)
+### Category — Induction Motors
 
-Custom-fabricated and prefabricated electrical infrastructure products.
+Industrial induction motors for commercial and industrial applications. *(Confirmed product line — no detailed spec data yet.)*
+
+---
+
+### Category — Instrumentation Products
+
+Measurement and monitoring instrumentation for power systems. *(Confirmed product line — no detailed spec data yet.)*
+
+---
+
+### Category — Low/Medium Voltage Switchgear (T'sys / Total Power Box Brand)
+
+Custom-fabricated switchgear and prefabricated busway feeder systems.
 
 #### Switchgear Systems — LVSG / MVSG / HVSG / ECBM
 - **Low Voltage Switchgear (LVSG)**: ≤1 kV distribution applications
@@ -118,22 +103,69 @@ Custom-fabricated and prefabricated electrical infrastructure products.
 - All designed and fabricated in-house using 3D CAD/CAM by certified electrical engineers
 - Custom configurations for commercial and industrial buildings
 
-#### T-LINE Panelboard — NEMA 1 Distribution Panelboards
-- Factory-fabricated NEMA 1 branch circuit distribution panelboards
-- Available as standard, swing-type dead front, or DIN-rail mounted configuration
-- Built to project specifications for commercial and industrial building distribution
-
 #### Busway / Busduct System
 - Prefabricated busduct feeder systems for high-current power distribution
 - Includes straight runs, elbow sections, and tee sections for routing flexibility
 - Eliminates large cable conduit runs; suitable for buildings and industrial plants
 - Custom lengths available
 
+---
+
+### Category — Automatic / Manual Transfer Switch
+
+Automatic and manual transfer switches for power continuity. *(Confirmed product line — no detailed spec data yet.)*
+
+---
+
+### Category — Panelboards / Meter Centers (T'sys / Total Power Box Brand)
+
+Factory-fabricated distribution panelboards and cable management systems.
+
+#### T-LINE Panelboard — NEMA 1 Distribution Panelboards
+- Factory-fabricated NEMA 1 branch circuit distribution panelboards
+- Available as standard, swing-type dead front, or DIN-rail mounted configuration
+- Built to project specifications for commercial and industrial building distribution
+
 #### Cable Tray System
 - Galvanized iron (GI) cable management systems
 - Ladder type, horizontal elbow, and tee fitting configurations
 - For organized cable routing in buildings and industrial facilities
 - Standard and custom widths; accessible for future additions and maintenance
+
+---
+
+### Category — Automatic Synchronizing Switchgear
+
+Automatic synchronizing switchgear for generator paralleling. *(Confirmed product line — no detailed spec data yet.)*
+
+---
+
+### Category — Circuit Breaker (HIMEL Brand)
+
+Low-voltage protective and switching devices used in motor control centers, distribution panels, and industrial control cabinets.
+
+#### Miniature Circuit Breaker — HDB6s / HDB9 Series
+- **Standard**: IEC 60898-1
+- Protection against overload and short-circuit currents
+- Available in 1P, 2P, 3P, and 4P configurations
+- Current range: 1–63A
+- Breaking capacity: up to 10 kAIC (HDB9H) or 6/4.5 kAIC (HDB6s)
+- Trip curves B, C, and D
+- Class 3 current energy-limiting; Quick Closed technology (20,000 mechanical / 10,000 electrical operations)
+- Temperature rated: −30°C to +70°C
+
+#### Manual Motor Starter + Contactor — HDP6 Series
+- **Standard**: IEC 947-1, IEC 947-2, IEC 947-4-1
+- Combines circuit breaker and thermal overload relay in a single unit
+- Paired with **HDC6 AC Magnetic Contactors** (9–95A and 115–630A ranges) and **HDR6 Thermal Overload Relay**
+- Designed for direct motor protection in low-frequency switching applications
+
+#### Molded Case & Air Circuit Breakers — HDM6L MCCB / HDW6 ACB Series
+- **Standard**: IEC 60947-2
+- **MCCB (HDM6s)**: 16–800AT in 100AF / 250AF / 400AF / 630AF / 800AF frames; breaking capacity up to 50 kAIC @ 400V
+- **ACB (HDW6)**: 630–6300AT in 2000AF / 3200AF / 6300AF frames; breaking capacity up to 120 kAIC; available fixed or drawout, manual or motorized
+- Used for main incomer and bus coupler applications in large distribution panels
+- Rated insulation voltage: AC 800V; impulse withstand: 8 kV
 
 ---
 

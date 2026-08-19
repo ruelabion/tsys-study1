@@ -15,8 +15,8 @@ npm run preview   # Preview production build
 
 This is the **T'sys Industrial Controls Inc.** website — an industrial B2B supplier of HIMEL low-voltage electrical products and Fuji Electric variable frequency drives. The company also fabricates custom switchgear, panelboards, and busway systems.
 
-- **Contact**: (02) 8687 3006 | 0917 563 1925 | sales@tsys.com.ph
-- **Address**: Unit 4, 2F LRC Bldg., 179 Mayon St., Brgy. Silangan, Quezon City, Philippines
+- **Contact**: (02) 8351-3225 / 8351-3495 / 8351-7189 / 8352-3314 | 0917 539 5654 | manager@tsys.com.ph
+- **Address**: 1F Torre Venezia Bldg., Timog Avenue cor. Sct. Santiago St., Brgy. Laging Handa, Quezon City, Philippines 1103
 - **Brand guideline**: `/Users/ruelabion/Sites/tsys.com.ph/Design.md`
 - **Old website (content source)**: `/Users/ruelabion/Sites/tsys.com.ph/tsys-website-claude/offline/`
 
@@ -46,12 +46,15 @@ Single source of truth for all 11 products. Key exports:
 - `getProductsByCategory(category)` — used for filtering
 - `getProductCountByCategory(category)` — used by CategoryGrid for counts
 
-**Product categories** (`ProductCategory` type):
-- `electrical-control` — HIMEL MCB, MCCB/ACB, Manual Starter + Contactors
-- `industrial-automation` — Fuji Electric FRENIC series (ACE, HVAC, AQUA, MEGA)
-- `panel-system` — Switchgear, T-LINE Panelboard, Busway, Cable Tray
-- `industrial-communication` — placeholder (no products yet)
-- `accessories` — placeholder (no products yet)
+**Product categories** (`ProductCategory` type) — aligned to the categories listed on T'sys's Facebook page (facebook.com/tsysindustrial):
+- `vfd` — Variable Frequency Drives (Fuji Electric FRENIC series: ACE, HVAC, AQUA, MEGA)
+- `induction-motors` — placeholder (no products yet)
+- `instrumentation` — placeholder (no products yet)
+- `switchgear` — Low/Medium Voltage Switchgear, Busway/Busduct
+- `transfer-switch` — placeholder (no products yet)
+- `panelboards-meter-centers` — T-LINE Panelboard, Cable Tray
+- `synchronizing-switchgear` — placeholder (no products yet)
+- `circuit-breaker` — HIMEL MCB, MCCB/ACB, Manual Starter + Contactors
 
 ### Navigation flow
 
@@ -136,3 +139,11 @@ Project started from a Google AI Studio template; none of the Gemini/backend sca
 - Deleted `.env.example` and `metadata.json` (AI Studio-specific, not used by the Vite app)
 - Rewrote `README.md` to describe the actual T'sys project instead of generic AI Studio instructions
 - No `.env.local` / API key is needed to run this project
+
+### Session 4 — Real contact info, logo, and FB-aligned product categories
+The old Joomla site's content (Session 2 source) had stale contact info from an earlier mockup, not the real business. Corrected against the actual old site and the live Facebook page (facebook.com/tsysindustrial):
+- `Header.tsx` / `Footer.tsx` / `DataEntry.tsx` — replaced contact info with the real one: phone (02) 8351-3225/3495/7189, 8352-3314, mobile 0917 539 5654, email manager@tsys.com.ph, address 1F Torre Venezia Bldg., Timog Avenue cor. Sct. Santiago St., Brgy. Laging Handa, Quezon City 1103
+- Added circular seal logo (`public/images/tsys/logo.jpg`) to `Header.tsx`, `Footer.tsx`, and as the site favicon (`index.html`)
+- Added "Commercial & Industrial Equipment Supplier" tagline (from FB Page category) to `Header.tsx` and `Footer.tsx`
+- Restructured `ProductCategory` in `src/data/products.ts` from the old 5-category scheme to the 8 categories listed on the FB Page (see Product Data section above); remapped all existing products into the new categories rather than deleting any
+- Updated `CategoryGrid.tsx` (8-card grid, new icons) and `ProductList.tsx` filter bar to match

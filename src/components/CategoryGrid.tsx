@@ -1,5 +1,5 @@
 import type { ElementType } from 'react';
-import { ArrowRight, Cpu, Zap, Network, LayoutGrid, Wrench, ChevronRight } from 'lucide-react';
+import { ArrowRight, Cpu, Zap, RotateCw, Gauge, Boxes, ToggleLeft, LayoutGrid, GitMerge, ChevronRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { getProductCountByCategory, type ProductCategory } from '../data/products';
 
@@ -13,37 +13,56 @@ type CategoryDef = {
 
 const categories: CategoryDef[] = [
   {
-    icon: Zap,
-    name: 'Electrical Control',
-    desc: 'Circuit Breakers, Contactors, Relays and Power Supplies',
-    category: 'electrical-control',
-    image: '/images/products/hdb9_mcb.png',
+    icon: Cpu,
+    name: 'Variable Frequency Drives',
+    desc: 'Fuji Electric FRENIC series inverters for motor speed control',
+    category: 'vfd',
+    image: '/images/products/pl_hdb9.png',
   },
   {
-    icon: Cpu,
-    name: 'Industrial Automation',
-    desc: 'Variable Frequency Drives and Motor Control',
-    category: 'industrial-automation',
-    image: '/images/products/hdp6_mp.png',
+    icon: RotateCw,
+    name: 'Induction Motors',
+    desc: 'Industrial induction motors for commercial and industrial applications',
+    category: 'induction-motors',
+  },
+  {
+    icon: Gauge,
+    name: 'Instrumentation Products',
+    desc: 'Measurement and monitoring instrumentation for power systems',
+    category: 'instrumentation',
+  },
+  {
+    icon: Boxes,
+    name: 'Low/Medium Voltage Switchgear',
+    desc: 'Custom-fabricated switchgear and busway feeder systems',
+    category: 'switchgear',
+    image: '/images/products/switchgear/lvsg.png',
+  },
+  {
+    icon: ToggleLeft,
+    name: 'Transfer Switch',
+    desc: 'Automatic and manual transfer switches for power continuity',
+    category: 'transfer-switch',
   },
   {
     icon: LayoutGrid,
-    name: 'Panel & System Components',
-    desc: 'Switchgear, Panelboards, Busway, and Cable Tray',
-    category: 'panel-system',
-    image: '/images/products/powerbox_prod_busway.png',
+    name: 'Panelboards / Meter Centers',
+    desc: 'NEMA 1 panelboards, meter centers, and cable tray systems',
+    category: 'panelboards-meter-centers',
+    image: '/images/products/powerbox_prod_tline.png',
   },
   {
-    icon: Network,
-    name: 'Industrial Communication',
-    desc: 'Networking, Interfaces, and Fieldbus Systems',
-    category: 'industrial-communication',
+    icon: GitMerge,
+    name: 'Synchronizing Switchgear',
+    desc: 'Automatic synchronizing switchgear for generator paralleling',
+    category: 'synchronizing-switchgear',
   },
   {
-    icon: Wrench,
-    name: 'Accessories',
-    desc: 'Wiring Accessories, Tools and more',
-    category: 'accessories',
+    icon: Zap,
+    name: 'Circuit Breaker',
+    desc: 'HIMEL MCB, MCCB/ACB, Manual Starters and Contactors',
+    category: 'circuit-breaker',
+    image: '/images/products/hdb9_mcb.png',
   },
 ];
 
@@ -62,7 +81,7 @@ export default function CategoryGrid({
         <div className="h-1 w-12 bg-primary mx-auto"></div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-surface-container border border-surface-container mb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-surface-container border border-surface-container mb-10">
         {categories.map(({ icon: Icon, name, desc, category, image }) => {
           const count = getProductCountByCategory(category);
           const hasProducts = count > 0;

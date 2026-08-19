@@ -1,9 +1,12 @@
 export type ProductCategory =
-  | 'electrical-control'
-  | 'industrial-automation'
-  | 'panel-system'
-  | 'industrial-communication'
-  | 'accessories';
+  | 'vfd'
+  | 'induction-motors'
+  | 'instrumentation'
+  | 'switchgear'
+  | 'transfer-switch'
+  | 'panelboards-meter-centers'
+  | 'synchronizing-switchgear'
+  | 'circuit-breaker';
 
 export type SpecRow = { label: string; value: string };
 
@@ -30,11 +33,14 @@ export type Product = {
 };
 
 export const CATEGORY_LABELS: Record<ProductCategory, string> = {
-  'electrical-control': 'Electrical Control',
-  'industrial-automation': 'Industrial Automation',
-  'panel-system': 'Panel & System Components',
-  'industrial-communication': 'Industrial Communication',
-  'accessories': 'Accessories',
+  'vfd': 'Variable Frequency Drives (Fuji Electric)',
+  'induction-motors': 'Induction Motors',
+  'instrumentation': 'Instrumentation Products',
+  'switchgear': 'Low/Medium Voltage Switchgear',
+  'transfer-switch': 'Automatic / Manual Transfer Switch',
+  'panelboards-meter-centers': 'Panelboards / Meter Centers',
+  'synchronizing-switchgear': 'Automatic Synchronizing Switchgear',
+  'circuit-breaker': 'Circuit Breaker',
 };
 
 const products: Product[] = [
@@ -44,7 +50,7 @@ const products: Product[] = [
     id: 'hdb-mcb',
     name: 'Miniature Circuit Breaker',
     brand: 'HIMEL',
-    category: 'electrical-control',
+    category: 'circuit-breaker',
     tagline: 'HDB6s / HDB9 Series',
     description:
       'High-breaking-capacity miniature circuit breakers providing reliable protection against overload and short-circuit currents. Available in 1P–4P configurations with Class 3 current energy-limiting capacity and Quick Closed technology for superior operational durability.',
@@ -86,7 +92,7 @@ const products: Product[] = [
     id: 'hdp6-starter',
     name: 'Manual Motor Starter',
     brand: 'HIMEL',
-    category: 'electrical-control',
+    category: 'circuit-breaker',
     tagline: 'HDP6 Series',
     description:
       'Professional motor control and protection device combining the functionality of a 3-pole circuit breaker and thermal overload relay. Ideal for direct motor towing in low-frequency switching applications, with IEC-compliant performance for commercial and industrial motor control panels.',
@@ -117,7 +123,7 @@ const products: Product[] = [
     id: 'hdm6l-mccb',
     name: 'Molded Case & Air Circuit Breakers',
     brand: 'HIMEL',
-    category: 'electrical-control',
+    category: 'circuit-breaker',
     tagline: 'HDM6L / HDW6 Series',
     description:
       'Heavy-duty circuit protection for industrial distribution panels. The HDM6L MCCB series covers 16–800A, while the HDW6 ACB series handles up to 6300A with drawout capability and motorized operation — ideal for main incomer and bus coupler applications.',
@@ -161,7 +167,7 @@ const products: Product[] = [
     id: 'frenic-ace',
     name: 'FRENIC-ACE Inverter',
     brand: 'Fuji Electric',
-    category: 'industrial-automation',
+    category: 'vfd',
     tagline: 'General-Purpose Variable Frequency Drive',
     description:
       'The standard inverter for the next generation — designed for most types of applications from fans and pumps to specialized machinery. Features customizable logic functions, sensorless vector control, and a 10-year lifetime design for maximum operational reliability.',
@@ -195,7 +201,7 @@ const products: Product[] = [
     id: 'frenic-hvac',
     name: 'FRENIC-HVAC Inverter',
     brand: 'Fuji Electric',
-    category: 'industrial-automation',
+    category: 'vfd',
     tagline: 'Slim-Type Inverter for HVAC Energy Saving',
     description:
       'The first slim-type inverter specialized for energy-saving in HVAC applications. Provides dedicated pump and fan control with BACnet MS/TP, Modbus RTU, and Metasys N2 communications as standard — enabling seamless integration into building automation systems.',
@@ -226,7 +232,7 @@ const products: Product[] = [
     id: 'frenic-aqua',
     name: 'FRENIC-AQUA Inverter',
     brand: 'Fuji Electric',
-    category: 'industrial-automation',
+    category: 'vfd',
     tagline: 'Slim-Type Inverter for Water and Pump Applications',
     description:
       'Purpose-built for water treatment, pump, and fluid control applications. Shares the slim-body design with FRENIC-HVAC but optimized for waterworks and pump system environments, with full BAS communications support and stand-alone operation.',
@@ -256,7 +262,7 @@ const products: Product[] = [
     id: 'frenic-mega',
     name: 'FRENIC-MEGA Inverter',
     brand: 'Fuji Electric',
-    category: 'industrial-automation',
+    category: 'vfd',
     tagline: 'High-Performance Drive for Heavy Industrial Loads',
     description:
       'High-performance variable frequency drive designed for heavy-duty industrial applications requiring high dynamic torque response. Available in HD (High Duty) and LD (Low Duty) ratings, with the same advanced logic customization as the ACE series and 10-year lifetime design.',
@@ -292,7 +298,7 @@ const products: Product[] = [
     id: 'switchgear',
     name: 'Switchgear Systems',
     brand: "T'sys / Total Power Box",
-    category: 'panel-system',
+    category: 'switchgear',
     tagline: 'LVSG · MVSG · HVSG · ECBM',
     description:
       "Custom-fabricated switchgear for low, medium, and high voltage distribution. Designed, produced, and installed by T'sys's team of certified electrical engineers using 3D CAD/CAM systems — from 400V LV distribution boards to HV switchgear for large commercial and industrial facilities.",
@@ -318,7 +324,7 @@ const products: Product[] = [
     id: 't-line-panelboard',
     name: 'T-LINE Panelboard',
     brand: "T'sys / Total Power Box",
-    category: 'panel-system',
+    category: 'panelboards-meter-centers',
     tagline: 'NEMA 1 Distribution Panelboards',
     description:
       "Factory-fabricated NEMA 1 panelboards for branch circuit distribution. Available in standard, swing dead-front, and DIN-rail mounted configurations — built to specification by T'sys's in-house fabrication team for reliable and organized power distribution in commercial and industrial buildings.",
@@ -342,7 +348,7 @@ const products: Product[] = [
     id: 'busway',
     name: 'Busway / Busduct System',
     brand: "T'sys / Total Power Box",
-    category: 'panel-system',
+    category: 'switchgear',
     tagline: 'Busduct Feeder System',
     description:
       "Prefabricated busduct and busway feeder systems for efficient high-current power distribution in buildings and industrial plants. Eliminates the need for large cable conduit runs while providing a clean, maintainable, and expandable power distribution infrastructure.",
@@ -366,7 +372,7 @@ const products: Product[] = [
     id: 'cable-tray',
     name: 'Cable Tray System',
     brand: "T'sys / Total Power Box",
-    category: 'panel-system',
+    category: 'panelboards-meter-centers',
     tagline: 'Galvanized Iron Cable Management',
     description:
       "Galvanized iron cable tray systems for organized and accessible cable routing throughout buildings and industrial facilities. Available in ladder type, horizontal elbow, and tee configurations for complete cable management infrastructure.",

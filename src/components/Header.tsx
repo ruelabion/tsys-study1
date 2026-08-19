@@ -27,8 +27,8 @@ export default function Header({
         <div className="max-w-[1440px] mx-auto px-margin py-2 flex justify-between items-center">
           <span className="text-xs">The Best Alternative to Your Current Needs</span>
           <div className="hidden md:flex items-center gap-6 text-xs">
-            <span>(02) 8687 3006</span>
-            <span>sales@tsys.com.ph</span>
+            <span>(02) 8351-3225</span>
+            <span>manager@tsys.com.ph</span>
           </div>
         </div>
       </div>
@@ -37,10 +37,22 @@ export default function Header({
       <div className="bg-white border-b border-surface-container">
         <div className="max-w-[1440px] mx-auto px-margin h-16 flex justify-between items-center">
           <button
-            className="text-lg font-black tracking-tight text-deep-blue font-headline"
+            className="flex items-center gap-3 text-left"
             onClick={() => onNavigate('home')}
           >
-            T'sys Industrial Controls
+            <img
+              src="/images/tsys/logo.jpg"
+              alt="T'sys Industrial Controls Inc. logo"
+              className="h-11 w-11 rounded-full object-cover flex-shrink-0"
+            />
+            <span className="flex flex-col leading-tight">
+              <span className="text-lg font-black tracking-tight text-deep-blue font-headline">
+                T'sys Industrial Controls Inc.
+              </span>
+              <span className="hidden sm:block text-[10px] font-semibold uppercase tracking-wide text-secondary">
+                Commercial &amp; Industrial Equipment Supplier
+              </span>
+            </span>
           </button>
 
           <nav className="hidden md:flex items-center space-x-6">

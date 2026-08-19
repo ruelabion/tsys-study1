@@ -1,5 +1,14 @@
 const quickLinks = ['Home', 'Products', 'Services', 'About Us', 'Downloads', 'Contact Us'];
-const productCategories = ['Industrial Automation', 'Electrical Control', 'Industrial Communication', 'Panel & System Components', 'Accessories'];
+const productCategories = [
+  'Variable Frequency Drives',
+  'Induction Motors',
+  'Instrumentation Products',
+  'Low/Medium Voltage Switchgear',
+  'Transfer Switch',
+  'Panelboards / Meter Centers',
+  'Synchronizing Switchgear',
+  'Circuit Breaker',
+];
 
 export default function Footer() {
   return (
@@ -8,9 +17,16 @@ export default function Footer() {
         <div className="max-w-[1440px] mx-auto px-margin">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
             <div>
-              <div className="text-base font-black font-headline mb-3 leading-snug">T'sys Industrial Controls Inc.</div>
-              <p className="text-white/60 text-sm leading-relaxed mb-5">The Best Alternative to Your Current Needs</p>
-              <a href="#" className="text-white/50 hover:text-white transition-colors text-sm underline underline-offset-2">
+              <div className="flex items-center gap-3 mb-3">
+                <img
+                  src="/images/tsys/logo.jpg"
+                  alt="T'sys Industrial Controls Inc. logo"
+                  className="h-11 w-11 rounded-full object-cover flex-shrink-0"
+                />
+                <div className="text-base font-black font-headline leading-snug">T'sys Industrial Controls Inc.</div>
+              </div>
+              <p className="text-white/60 text-sm leading-relaxed mb-5">Commercial &amp; Industrial Equipment Supplier</p>
+              <a href="https://www.facebook.com/tsysindustrial/" target="_blank" rel="noopener noreferrer" className="text-white/50 hover:text-white transition-colors text-sm underline underline-offset-2">
                 Facebook
               </a>
             </div>
@@ -40,12 +56,13 @@ export default function Footer() {
             <div>
               <h4 className="label-caps text-white/80 text-[11px] mb-5 border-b border-white/20 pb-3">Contact Us</h4>
               <div className="space-y-3 text-white/60 text-sm">
-                <p>(02) 8687 3006</p>
-                <p>0917 563 1925</p>
-                <p>sales@tsys.com.ph</p>
+                <p>(02) 8351-3225 / 8351-3495 / 8351-7189 / 8352-3314</p>
+                <p>0917 539 5654</p>
+                <p>manager@tsys.com.ph</p>
                 <p className="leading-relaxed">
-                  Unit 4, 2F LRC Bldg., 179 Mayon St.,<br />
-                  Brgy. Silangan, Quezon City, Philippines
+                  1F Torre Venezia Bldg., Timog Avenue<br />
+                  cor. Sct. Santiago St., Brgy. Laging Handa,<br />
+                  Quezon City, Philippines 1103
                 </p>
               </div>
             </div>

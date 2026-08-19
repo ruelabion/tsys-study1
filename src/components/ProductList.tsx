@@ -3,11 +3,14 @@ import { motion } from 'motion/react';
 import products, { CATEGORY_LABELS, type ProductCategory } from '../data/products';
 
 const CATEGORY_ORDER: ProductCategory[] = [
-  'electrical-control',
-  'industrial-automation',
-  'panel-system',
-  'industrial-communication',
-  'accessories',
+  'vfd',
+  'induction-motors',
+  'instrumentation',
+  'switchgear',
+  'transfer-switch',
+  'panelboards-meter-centers',
+  'synchronizing-switchgear',
+  'circuit-breaker',
 ];
 
 export default function ProductList({
