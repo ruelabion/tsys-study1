@@ -14,6 +14,8 @@ import ProductList from './components/ProductList';
 import About from './components/About';
 import Settings from './components/Settings';
 import DataEntry from './components/DataEntry';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import TermsConditions from './components/TermsConditions';
 import Footer from './components/Footer';
 import { Headphones } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -27,6 +29,8 @@ type PageState =
   | { page: 'product'; productId: string }
   | { page: 'about' }
   | { page: 'form'; prefill?: FormPrefill }
+  | { page: 'privacy' }
+  | { page: 'terms' }
   | { page: 'settings' };
 
 const ACTUAL_BRANDS = ['HIMEL', 'Fuji Electric', 'Mitsubishi Electric', 'Schneider Electric', 'Siemens', 'Omron'];
@@ -148,6 +152,20 @@ export default function App() {
             </motion.div>
           )}
 
+          {/* ── PRIVACY POLICY ───────────────────────────────────── */}
+          {state.page === 'privacy' && (
+            <motion.div key="privacy" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+              <PrivacyPolicy onBack={() => navigate({ page: 'home' })} />
+            </motion.div>
+          )}
+
+          {/* ── TERMS & CONDITIONS ───────────────────────────────── */}
+          {state.page === 'terms' && (
+            <motion.div key="terms" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+              <TermsConditions onBack={() => navigate({ page: 'home' })} />
+            </motion.div>
+          )}
+
           {/* ── SETTINGS (kept as demo) ───────────────────────────── */}
           {state.page === 'settings' && (
             <motion.div key="settings" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}>
@@ -158,7 +176,10 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      <Footer />
+      <Footer
+        onNavigatePrivacy={() => navigate({ page: 'privacy' })}
+        onNavigateTerms={() => navigate({ page: 'terms' })}
+      />
 
       <motion.button
         whileHover={{ scale: 1.1 }}

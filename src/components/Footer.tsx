@@ -12,7 +12,13 @@ const productCategories = [
   'Circuit Breaker',
 ];
 
-export default function Footer() {
+export default function Footer({
+  onNavigatePrivacy,
+  onNavigateTerms,
+}: {
+  onNavigatePrivacy: () => void;
+  onNavigateTerms: () => void;
+}) {
   return (
     <footer>
       <div className="bg-deep-blue text-white py-16">
@@ -83,8 +89,8 @@ export default function Footer() {
         <div className="max-w-[1440px] mx-auto px-margin flex flex-col md:flex-row justify-between items-center gap-4 text-white/40 text-xs">
           <span>© {new Date().getFullYear()} T'sys Industrial Controls Inc. All Rights Reserved.</span>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-white/70 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white/70 transition-colors">Terms & Conditions</a>
+            <button onClick={onNavigatePrivacy} className="hover:text-white/70 transition-colors">Privacy Policy</button>
+            <button onClick={onNavigateTerms} className="hover:text-white/70 transition-colors">Terms &amp; Conditions</button>
           </div>
         </div>
       </div>

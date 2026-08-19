@@ -144,8 +144,9 @@ Quick-reference checklist of everything done so far, for reuse in future session
 11. **Full documentation pass + V1 tag + branch promotion** — this summary section added; `origin/main`'s prior tip tagged `V1` (pushed) and preserved; the `update-logo-contact-info` branch (all work above) force-pushed to become the new `main` on GitHub.
 12. **CI/CD pipeline live** — GitHub Actions deploys `main` to a new, independent S3 bucket (`tsys-study-dev`) behind CloudFront, reachable at **https://study-dev.tsys.com.ph** (Route 53 CNAME, reused existing wildcard ACM cert). Fully independent from the production site/bucket/distribution. See Session 12 below for all resource IDs.
 13. **Homepage hero buttons wired up** — "Explore Products" navigates to the Products page; "Download Catalog" (no real catalog file existed anywhere) repurposed as "Get a Quote" → Contact page, matching the CTA pattern used everywhere else. See the new "Browser Testing Notes" section above — a lengthy false-alarm debugging session on this task's verification led to identifying and documenting the `document.hidden`/rAF-freeze browser-automation artifact.
+14. **Privacy Policy / Terms & Conditions pages added** — real content (not lorem ipsum), footer links wired up, reachable from every page since `Footer` is global. See Session 14 below.
 
-**Open items / not yet done** (flagged in various sessions, still outstanding as of Session 13):
+**Open items / not yet done** (flagged in various sessions, still outstanding as of Session 14):
 - Contact form has never been tested end-to-end against the live AWS endpoint (deliberately, to avoid spamming T'sys's real inbox with test data) — a human should do one real test submission.
 - Legacy products (everything except the 4 with real `brochureUrl`s) still have non-functional brochure buttons if `brochureLabel` is set without a matching PDF.
 - `induction-motors`, `transfer-switch`, and `synchronizing-switchgear` categories are still "Coming Soon" placeholders with zero products.
@@ -277,3 +278,11 @@ Notes:
 - Deployed via the CI/CD pipeline from Session 12; verified live on `study-dev.tsys.com.ph`.
 
 Verifying this in the browser triggered an extended, ultimately-false-alarm debugging session: clicks appeared not to navigate, despite the code being correct. Root-caused to the automated tab having `document.hidden === true`, which freezes Framer Motion's `requestAnimationFrame`-driven `AnimatePresence` transitions — see the new "Browser Testing Notes" section near the top of this file for the full diagnostic and workaround, so this doesn't need to be re-discovered from scratch next time.
+
+### Session 14 — Privacy Policy and Terms & Conditions pages
+
+Footer's `Privacy Policy` and `Terms & Conditions` links (`<a href="#">`) were dead. Added two new full pages:
+- `src/components/PrivacyPolicy.tsx` and `src/components/TermsConditions.tsx` — drafted content appropriate for a Philippine B2B industrial supplier corporate site: Privacy Policy references the Data Privacy Act of 2012 (RA 10173) and accurately describes what this site actually collects (only the contact form: name, company, email, phone, subject, message — no cookies/analytics/tracking exist in the codebase, confirmed by grep before writing the policy, so it wasn't overstated). Terms & Conditions covers acceptable use, product-info/pricing disclaimers (this site is not a store — no purchase/sale happens here, quotations require separate confirmation), IP/trademark notes (HIMEL, Fuji Electric, etc. belong to their respective owners), limitation of liability, and Philippine governing law. Both carry a plain-language footer note that this is a template, not a substitute for legal counsel review.
+- Added `'privacy'` and `'terms'` to `PageState` in `App.tsx`; `Footer.tsx` now takes `onNavigatePrivacy`/`onNavigateTerms` props (bottom-bar links became `<button>`s) instead of dead `href="#"` anchors. Both new pages use the same deep-blue-hero page layout as About/Contact, with a "← Back to Home" control.
+- Since `Footer` is rendered globally in `App.tsx` outside the page switch, both links are already reachable from every page — no extra wiring needed.
+- Verified live in-browser (working around the Session 13 `document.hidden` rAF-freeze artifact): both pages render with correct content, both footer links navigate correctly, both "Back to Home" buttons and the Header "Home" link correctly return to the homepage.
