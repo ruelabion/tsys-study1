@@ -145,8 +145,9 @@ Quick-reference checklist of everything done so far, for reuse in future session
 12. **CI/CD pipeline live** — GitHub Actions deploys `main` to a new, independent S3 bucket (`tsys-study-dev`) behind CloudFront, reachable at **https://study-dev.tsys.com.ph** (Route 53 CNAME, reused existing wildcard ACM cert). Fully independent from the production site/bucket/distribution. See Session 12 below for all resource IDs.
 13. **Homepage hero buttons wired up** — "Explore Products" navigates to the Products page; "Download Catalog" (no real catalog file existed anywhere) repurposed as "Get a Quote" → Contact page, matching the CTA pattern used everywhere else. See the new "Browser Testing Notes" section above — a lengthy false-alarm debugging session on this task's verification led to identifying and documenting the `document.hidden`/rAF-freeze browser-automation artifact.
 14. **Privacy Policy / Terms & Conditions pages added** — real content (not lorem ipsum), footer links wired up, reachable from every page since `Footer` is global. See Session 14 below.
+15. **LinkedIn link added to footer** — alongside Facebook, same pattern (icon + label, new tab).
 
-**Open items / not yet done** (flagged in various sessions, still outstanding as of Session 14):
+**Open items / not yet done** (flagged in various sessions, still outstanding as of Session 15):
 - Contact form has never been tested end-to-end against the live AWS endpoint (deliberately, to avoid spamming T'sys's real inbox with test data) — a human should do one real test submission.
 - Legacy products (everything except the 4 with real `brochureUrl`s) still have non-functional brochure buttons if `brochureLabel` is set without a matching PDF.
 - `induction-motors`, `transfer-switch`, and `synchronizing-switchgear` categories are still "Coming Soon" placeholders with zero products.
@@ -286,3 +287,7 @@ Footer's `Privacy Policy` and `Terms & Conditions` links (`<a href="#">`) were d
 - Added `'privacy'` and `'terms'` to `PageState` in `App.tsx`; `Footer.tsx` now takes `onNavigatePrivacy`/`onNavigateTerms` props (bottom-bar links became `<button>`s) instead of dead `href="#"` anchors. Both new pages use the same deep-blue-hero page layout as About/Contact, with a "← Back to Home" control.
 - Since `Footer` is rendered globally in `App.tsx` outside the page switch, both links are already reachable from every page — no extra wiring needed.
 - Verified live in-browser (working around the Session 13 `document.hidden` rAF-freeze artifact): both pages render with correct content, both footer links navigate correctly, both "Back to Home" buttons and the Header "Home" link correctly return to the homepage.
+
+### Session 15 — LinkedIn link added to footer
+
+T'sys also has a LinkedIn page: `https://www.linkedin.com/in/tsys-industrial-controls-inc-central-luzon-2b7302371/`. Added it to `Footer.tsx` next to the Facebook link, same pattern exactly — `Linkedin` icon (lucide-react), `target="_blank"`, `rel="noopener noreferrer"`, matching hover/underline styling and `aria-label`. Both social links now sit side by side in a `flex` row. Deployed and confirmed live on `study-dev.tsys.com.ph`.
