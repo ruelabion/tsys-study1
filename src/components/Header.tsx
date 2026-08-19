@@ -1,4 +1,4 @@
-import { Search, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
 
 type NavMeta = { category?: string; productId?: string };
 
@@ -27,8 +27,8 @@ export default function Header({
         <div className="max-w-[1440px] mx-auto px-margin py-2 flex justify-between items-center">
           <span className="text-xs">The Best Alternative to Your Current Needs</span>
           <div className="hidden md:flex items-center gap-6 text-xs">
-            <span>(02) 8351-3225</span>
-            <span>manager@tsys.com.ph</span>
+            <a href="tel:+639175395654" className="hover:text-white/70 transition-colors">0917 539 5654</a>
+            <a href="mailto:manager@tsys.com.ph" className="hover:text-white/70 transition-colors">manager@tsys.com.ph</a>
           </div>
         </div>
       </div>
@@ -72,7 +72,6 @@ export default function Header({
           </nav>
 
           <div className="flex items-center gap-3">
-            <button className="p-2 text-secondary md:hidden"><Search size={22} /></button>
             <button className="p-2 text-on-surface md:hidden"><Menu size={22} /></button>
             <button
               className="hidden md:block bg-primary text-white px-5 py-2 label-caps hover:bg-primary-container transition-all active:scale-95"

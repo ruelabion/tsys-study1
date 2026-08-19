@@ -37,4 +37,10 @@
   .label-caps {
     @apply font-headline text-[12px] font-bold tracking-[0.1em] uppercase;
   }
+
+  /* Tailwind v4 Preflight resets <button> to the browser's native (arrow) cursor.
+     Restore the hand pointer for every clickable button site-wide. */
+  button:not(:disabled) {
+    cursor: pointer;
+  }
 }

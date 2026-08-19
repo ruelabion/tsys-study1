@@ -19,12 +19,14 @@ import { Headphones } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import type { ProductCategory } from './data/products';
 
+type FormPrefill = { subject?: string; message?: string };
+
 type PageState =
   | { page: 'home' }
   | { page: 'products'; category?: ProductCategory }
   | { page: 'product'; productId: string }
   | { page: 'about' }
-  | { page: 'form' }
+  | { page: 'form'; prefill?: FormPrefill }
   | { page: 'settings' };
 
 const ACTUAL_BRANDS = ['HIMEL', 'Fuji Electric', 'Mitsubishi Electric', 'Schneider Electric', 'Siemens', 'Omron'];
@@ -114,6 +116,7 @@ export default function App() {
               <ProductList
                 initialCategory={state.page === 'products' ? state.category : undefined}
                 onSelectProduct={id => navigate({ page: 'product', productId: id })}
+                onRequestQuote={prefill => navigate({ page: 'form', prefill })}
               />
             </motion.div>
           )}
@@ -124,6 +127,7 @@ export default function App() {
               productId={state.productId}
               onBack={() => navigate({ page: 'products' })}
               onSelectProduct={id => navigate({ page: 'product', productId: id })}
+              onRequestQuote={prefill => navigate({ page: 'form', prefill })}
             />
           )}
 
@@ -137,7 +141,7 @@ export default function App() {
           {/* ── CONTACT ──────────────────────────────────────────── */}
           {state.page === 'form' && (
             <motion.div key="form" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
-              <DataEntry />
+              <DataEntry prefill={state.page === 'form' ? state.prefill : undefined} />
             </motion.div>
           )}
 

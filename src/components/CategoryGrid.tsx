@@ -17,7 +17,7 @@ const categories: CategoryDef[] = [
     name: 'Variable Frequency Drives',
     desc: 'Fuji Electric FRENIC series inverters for motor speed control',
     category: 'vfd',
-    image: '/images/products/pl_hdb9.png',
+    image: '/images/products/vfd/frenic_ace.jpg',
   },
   {
     icon: RotateCw,
@@ -28,13 +28,14 @@ const categories: CategoryDef[] = [
   {
     icon: Gauge,
     name: 'Instrumentation Products',
-    desc: 'Measurement and monitoring instrumentation for power systems',
+    desc: 'Fuji Electric pressure transmitters and ultrasonic flowmeters',
     category: 'instrumentation',
+    image: '/images/products/instrumentation/pressure_transmitter.jpg',
   },
   {
     icon: Boxes,
     name: 'Low/Medium Voltage Switchgear',
-    desc: 'Custom-fabricated switchgear and busway feeder systems',
+    desc: 'Custom-fabricated switchgear, busway, and oil-immersed transformers',
     category: 'switchgear',
     image: '/images/products/switchgear/lvsg.png',
   },

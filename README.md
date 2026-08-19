@@ -18,3 +18,8 @@ App runs at http://localhost:3000.
 - `npm run build` — production build
 - `npm run lint` — type-check with `tsc --noEmit`
 - `npm run preview` — preview production build
+
+## Ownership note
+
+The "Electrical Distributor" template design previously pitched as a live demo at
+`tsys-demo.spiceworx.com` has been decommissioned and is now owned by **powerboxsolutions.com**.

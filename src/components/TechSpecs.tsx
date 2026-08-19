@@ -1,4 +1,5 @@
 import { Network, Search, Phone, Settings, ArrowRight } from 'lucide-react';
+import { motion } from 'motion/react';
 
 const services = [
   {
@@ -28,13 +29,19 @@ export default function TechSpecs() {
     <section className="py-20 border-t border-surface-container">
       <div className="max-w-[1440px] mx-auto px-margin">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="overflow-hidden shadow-xl"
+          >
             <img
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeqRgl2QiO_BH_5u8XNQVMt1m_MyUf0IYXsJUh8CC2s-KiSUAREqIIyGYek-pWE_9YunP9jklWH_xWDmo9REQCgPUUFZSp3SAW6Y9wufkgZUCnEh3sYhIwlWiWLKP4Gtg6l6DauIJqNvHG1x-F-XpIkKudZZwJ1dE24IptqjrlvXe7-xvoZANhLId-hriqkbqx3Jy1hTUvipKSwhcbIKbb9EvM92f19ej-ZYojvwpQZMBnsdcdA9lxh5G589WTuuyaZnKQGC4xLsM"
-              alt="Engineer providing technical support"
-              className="w-full h-[500px] object-cover"
+              src="/images/tsys/trade-show-booth.jpg"
+              alt="T'sys Industrial Controls Inc. booth (S13) at an industrial trade show, displaying Fuji Electric VFDs, switchgear, and panelboard products"
+              className="w-full h-[500px] object-cover transition-transform duration-700 ease-out hover:scale-105"
             />
-          </div>
+          </motion.div>
 
           <div>
             <div className="mb-10">

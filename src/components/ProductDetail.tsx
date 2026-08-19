@@ -2,15 +2,18 @@ import { useState } from 'react';
 import { ChevronRight, Download, ArrowRight, CheckCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 import { getProductById, getProductsByCategory, CATEGORY_LABELS } from '../data/products';
+import ProductImage from './ProductImage';
 
 export default function ProductDetail({
   productId,
   onBack,
   onSelectProduct,
+  onRequestQuote,
 }: {
   productId: string;
   onBack: () => void;
   onSelectProduct: (id: string) => void;
+  onRequestQuote: (prefill?: { subject?: string; message?: string }) => void;
 }) {
   const product = getProductById(productId);
   const [activeVariant, setActiveVariant] = useState(0);
@@ -31,6 +34,20 @@ export default function ProductDetail({
     .filter(Boolean) as NonNullable<ReturnType<typeof getProductById>>[];
 
   const variant = product.variants[activeVariant];
+
+  const handleGetQuote = () => {
+    onRequestQuote({
+      subject: 'Request for Quotation',
+      message: `I'm interested in a quote for the ${product.name}${variant ? ` — ${variant.name}` : ''} (${product.brand}, ${product.tagline}).\n\nPlease send me pricing, lead time, and stock availability.`,
+    });
+  };
+
+  const handleTalkToExpert = () => {
+    onRequestQuote({
+      subject: 'System Integration',
+      message: `I'd like to speak with a specialist engineer about the ${product.name}${variant ? ` — ${variant.name}` : ''} (${product.brand}, ${product.tagline}) for system integration support / bulk procurement.\n\nPlease have someone reach out to discuss our requirements.`,
+    });
+  };
 
   return (
     <motion.div
@@ -57,9 +74,10 @@ export default function ProductDetail({
           {/* Image Panel */}
           <div className="lg:col-span-5">
             <div className="bg-white border border-surface-container p-10 flex items-center justify-center relative overflow-hidden group min-h-[340px]">
-              <img
+              <ProductImage
                 src={variant?.image ?? product.mainImage}
                 alt={variant?.name ?? product.name}
+                size="lg"
                 className="max-h-64 max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute bottom-3 right-3 bg-primary text-white px-3 py-1 label-caps text-[10px]">
@@ -80,9 +98,10 @@ export default function ProductDetail({
                         : 'border-surface-container hover:border-secondary'
                     }`}
                   >
-                    <img
+                    <ProductImage
                       src={v.image}
                       alt={v.name}
+                      size="sm"
                       className="w-12 h-12 object-contain"
                     />
                   </button>
@@ -126,10 +145,23 @@ export default function ProductDetail({
             )}
 
             <div className="flex flex-wrap gap-4">
-              <button className="bg-primary text-white px-10 py-4 label-caps hover:bg-primary-container transition-all active:scale-95">
+              <button
+                onClick={handleGetQuote}
+                className="bg-primary text-white px-10 py-4 label-caps hover:bg-primary-container transition-all active:scale-95"
+              >
                 CONFIGURE / GET A QUOTE
               </button>
-              {product.brochureLabel && (
+              {product.brochureLabel && product.brochureUrl && (
+                <a
+                  href={product.brochureUrl}
+                  download
+                  className="border border-on-surface text-on-surface px-8 py-4 label-caps hover:bg-on-surface hover:text-white transition-all active:scale-95 flex items-center gap-2"
+                >
+                  <Download size={16} />
+                  {product.brochureLabel}
+                </a>
+              )}
+              {product.brochureLabel && !product.brochureUrl && (
                 <button className="border border-on-surface text-on-surface px-8 py-4 label-caps hover:bg-on-surface hover:text-white transition-all active:scale-95 flex items-center gap-2">
                   <Download size={16} />
                   {product.brochureLabel}
@@ -222,8 +254,21 @@ export default function ProductDetail({
             <p className="text-secondary text-sm max-w-md">Speak with our specialist engineers for system integration support and bulk procurement schedules.</p>
           </div>
           <div className="flex flex-wrap gap-4">
-            <button className="bg-primary text-white px-8 py-4 label-caps hover:bg-primary-container transition-all active:scale-95">Talk to an Expert</button>
-            <button className="border border-surface-container-high text-on-surface px-8 py-4 label-caps hover:bg-surface-container transition-all active:scale-95">Download Brochure</button>
+            <button
+              onClick={handleTalkToExpert}
+              className="bg-primary text-white px-8 py-4 label-caps hover:bg-primary-container transition-all active:scale-95"
+            >
+              Talk to an Expert
+            </button>
+            {product.brochureUrl && (
+              <a
+                href={product.brochureUrl}
+                download
+                className="border border-surface-container-high text-on-surface px-8 py-4 label-caps hover:bg-surface-container transition-all active:scale-95"
+              >
+                Download Brochure
+              </a>
+            )}
           </div>
         </section>
 

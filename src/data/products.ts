@@ -12,7 +12,7 @@ export type SpecRow = { label: string; value: string };
 
 export type ProductVariant = {
   name: string;
-  image: string;
+  image?: string;
   specs?: SpecRow[];
 };
 
@@ -24,11 +24,12 @@ export type Product = {
   tagline: string;
   description: string;
   standard?: string;
-  mainImage: string;
+  mainImage?: string;
   features: string[];
   variants: ProductVariant[];
   stockItems?: string[];
   brochureLabel?: string;
+  brochureUrl?: string;
   relatedIds?: string[];
 };
 
@@ -171,7 +172,7 @@ const products: Product[] = [
     tagline: 'General-Purpose Variable Frequency Drive',
     description:
       'The standard inverter for the next generation — designed for most types of applications from fans and pumps to specialized machinery. Features customizable logic functions, sensorless vector control, and a 10-year lifetime design for maximum operational reliability.',
-    mainImage: '/images/products/pl_hdb9.png',
+    mainImage: '/images/products/vfd/frenic_ace.jpg',
     features: [
       'Customizable logic functions (up to 200 steps, digital and analog)',
       'Sensorless dynamic torque vector control',
@@ -183,9 +184,9 @@ const products: Product[] = [
       '10-year lifetime design',
     ],
     variants: [
-      { name: 'Standard Type (0.2–37kW)', image: '/images/products/pl_hdb9.png', specs: [{ label: 'Capacity', value: '0.2–590 kW' }, { label: 'Built-in Brake Chopper', value: '0.2–37 kW' }, { label: 'Voltage Class', value: '200V / 400V, 3-phase' }] },
-      { name: 'Single Phase Model', image: '/images/products/pl_hdb9.png', specs: [{ label: 'Capacity', value: '0.1–2.2 kW' }, { label: 'Voltage', value: '200V Class' }] },
-      { name: 'EMC Filter Built-in', image: '/images/products/pl_hdb9.png', specs: [{ label: 'Phase', value: '3PH 200V / 400V Class' }, { label: 'EMC', value: 'EN61800-3 Compliant' }] },
+      { name: 'Standard Type (0.2–37kW)', image: '/images/products/vfd/frenic_ace.jpg', specs: [{ label: 'Capacity', value: '0.2–590 kW' }, { label: 'Built-in Brake Chopper', value: '0.2–37 kW' }, { label: 'Voltage Class', value: '200V / 400V, 3-phase' }] },
+      { name: 'Single Phase Model', image: '/images/products/vfd/frenic_ace.jpg', specs: [{ label: 'Capacity', value: '0.1–2.2 kW' }, { label: 'Voltage', value: '200V Class' }] },
+      { name: 'EMC Filter Built-in', image: '/images/products/vfd/frenic_ace.jpg', specs: [{ label: 'Phase', value: '3PH 200V / 400V Class' }, { label: 'EMC', value: 'EN61800-3 Compliant' }] },
     ],
     stockItems: [
       'Standard Type — Built-in Brake Chopper, 0.2–37 kW',
@@ -205,7 +206,7 @@ const products: Product[] = [
     tagline: 'Slim-Type Inverter for HVAC Energy Saving',
     description:
       'The first slim-type inverter specialized for energy-saving in HVAC applications. Provides dedicated pump and fan control with BACnet MS/TP, Modbus RTU, and Metasys N2 communications as standard — enabling seamless integration into building automation systems.',
-    mainImage: '/images/products/pl_hdp6.png',
+    mainImage: '/images/products/vfd/frenic_hvac.jpg',
     features: [
       'Optimal control with energy-saving function',
       'Dedicated pump control function as standard',
@@ -217,14 +218,15 @@ const products: Product[] = [
       'BACnet MS/TP, Modbus RTU, Metasys N2 as standard',
     ],
     variants: [
-      { name: 'Standard Type with EMC Filter', image: '/images/products/pl_hdp6.png', specs: [{ label: 'Capacity', value: '0.75–710 kW' }, { label: 'Enclosure', value: 'IP21 or IP55 (0.75–90 kW)' }] },
-      { name: 'DCR + EMC Filter Built-in', image: '/images/products/pl_hdp6.png', specs: [{ label: 'Capacity', value: '0.75–710 kW' }, { label: 'DC Reactor', value: 'Built-in' }, { label: 'EMC Filter', value: 'Built-in' }] },
+      { name: 'Standard Type with EMC Filter', image: '/images/products/vfd/frenic_hvac.jpg', specs: [{ label: 'Capacity', value: '0.75–710 kW' }, { label: 'Enclosure', value: 'IP21 or IP55 (0.75–90 kW)' }] },
+      { name: 'DCR + EMC Filter Built-in', image: '/images/products/vfd/frenic_hvac.jpg', specs: [{ label: 'Capacity', value: '0.75–710 kW' }, { label: 'DC Reactor', value: 'Built-in' }, { label: 'EMC Filter', value: 'Built-in' }] },
     ],
     stockItems: [
       'Standard Type (EMC Built-in), 0.75–710 kW',
       'DCR + EMC Filter Built-in Type, 0.75–710 kW',
     ],
     brochureLabel: 'FRENIC-HVAC Brochure',
+    brochureUrl: '/brochures/frenic-hvac-catalog.pdf',
     relatedIds: ['frenic-ace', 'frenic-aqua', 'frenic-mega'],
   },
 
@@ -236,7 +238,7 @@ const products: Product[] = [
     tagline: 'Slim-Type Inverter for Water and Pump Applications',
     description:
       'Purpose-built for water treatment, pump, and fluid control applications. Shares the slim-body design with FRENIC-HVAC but optimized for waterworks and pump system environments, with full BAS communications support and stand-alone operation.',
-    mainImage: '/images/products/pl_hdm6l.png',
+    mainImage: '/images/products/vfd/frenic_aqua.jpg',
     features: [
       'Dedicated pump control function as standard',
       'Optimal energy-saving control algorithm',
@@ -247,8 +249,8 @@ const products: Product[] = [
       'BACnet MS/TP, Modbus RTU, Metasys N2 as standard',
     ],
     variants: [
-      { name: 'Standard Type with EMC Filter', image: '/images/products/pl_hdm6l.png', specs: [{ label: 'Capacity', value: '0.75–710 kW' }, { label: 'Enclosure', value: 'IP21 or IP55 (0.75–90 kW)' }] },
-      { name: 'DCR + EMC Filter Built-in', image: '/images/products/pl_hdm6l.png', specs: [{ label: 'Capacity', value: '0.75–710 kW' }, { label: 'DC Reactor', value: 'Built-in' }, { label: 'EMC Filter', value: 'Built-in' }] },
+      { name: 'Standard Type with EMC Filter', image: '/images/products/vfd/frenic_aqua.jpg', specs: [{ label: 'Capacity', value: '0.75–710 kW' }, { label: 'Enclosure', value: 'IP21 or IP55 (0.75–90 kW)' }] },
+      { name: 'DCR + EMC Filter Built-in', image: '/images/products/vfd/frenic_aqua.jpg', specs: [{ label: 'Capacity', value: '0.75–710 kW' }, { label: 'DC Reactor', value: 'Built-in' }, { label: 'EMC Filter', value: 'Built-in' }] },
     ],
     stockItems: [
       'Standard Type (EMC Built-in), 0.75–710 kW',
@@ -266,7 +268,7 @@ const products: Product[] = [
     tagline: 'High-Performance Drive for Heavy Industrial Loads',
     description:
       'High-performance variable frequency drive designed for heavy-duty industrial applications requiring high dynamic torque response. Available in HD (High Duty) and LD (Low Duty) ratings, with the same advanced logic customization as the ACE series and 10-year lifetime design.',
-    mainImage: '/images/products/pl_hdc6.png',
+    mainImage: '/images/products/vfd/frenic_mega.jpg',
     features: [
       'HD (Heavy Duty) and LD (Light Duty) rated versions',
       'Customizable logic functions (up to 200 steps)',
@@ -278,9 +280,9 @@ const products: Product[] = [
       '10-year lifetime design',
     ],
     variants: [
-      { name: 'HD Standard 3-Phase', image: '/images/products/pl_hdc6.png', specs: [{ label: 'Load Rating', value: 'HD — Heavy Duty' }, { label: 'Voltage', value: '200V / 400V, 3-phase' }] },
-      { name: 'LD Standard 3-Phase', image: '/images/products/pl_hdc6.png', specs: [{ label: 'Load Rating', value: 'LD — Light Duty' }, { label: 'Voltage', value: '200V / 400V, 3-phase' }] },
-      { name: 'Single Phase Model', image: '/images/products/pl_hdc6.png', specs: [{ label: 'Capacity', value: '0.1–2.2 kW' }, { label: 'Voltage', value: '200V Class' }] },
+      { name: 'HD Standard 3-Phase', image: '/images/products/vfd/frenic_mega.jpg', specs: [{ label: 'Load Rating', value: 'HD — Heavy Duty' }, { label: 'Voltage', value: '200V / 400V, 3-phase' }] },
+      { name: 'LD Standard 3-Phase', image: '/images/products/vfd/frenic_mega.jpg', specs: [{ label: 'Load Rating', value: 'LD — Light Duty' }, { label: 'Voltage', value: '200V / 400V, 3-phase' }] },
+      { name: 'Single Phase Model', image: '/images/products/vfd/frenic_mega.jpg', specs: [{ label: 'Capacity', value: '0.1–2.2 kW' }, { label: 'Voltage', value: '200V Class' }] },
     ],
     stockItems: [
       'HD Type, 3PH 200V / 400V Class',
@@ -317,7 +319,7 @@ const products: Product[] = [
       { name: 'High Voltage Switchgear (HVSG)', image: '/images/products/switchgear/hvsg.png', specs: [{ label: 'Voltage Class', value: 'High Voltage (>35 kV)' }] },
       { name: 'Enclosed Circuit Breaker with Metering (ECBM)', image: '/images/products/switchgear/ecbm.png', specs: [{ label: 'Type', value: 'Enclosed Circuit Breaker with Metering' }] },
     ],
-    relatedIds: ['t-line-panelboard', 'busway'],
+    relatedIds: ['t-line-panelboard', 'busway', 'oil-immersed-transformer'],
   },
 
   {
@@ -369,6 +371,33 @@ const products: Product[] = [
   },
 
   {
+    id: 'oil-immersed-transformer',
+    name: 'Oil Immersed Transformer',
+    brand: 'Fuji Electric / Fuji Tusco',
+    category: 'switchgear',
+    tagline: 'Distribution & Power Transformers',
+    description:
+      "Oil-immersed distribution and power transformers manufactured by Fuji Tusco, combining Fuji Electric's transformer engineering with local manufacturing. Built with Hi-B oriented silicon steel core construction and high series capacitance disc winding for reliable performance in commercial and industrial power distribution.",
+    standard: 'IEC 60076, IEC 60076-5',
+    mainImage: '/images/products/switchgear/oil_immersed_transformer.jpg',
+    features: [
+      'Hi-B (high magnetic flux density) oriented silicon steel core for low noise and losses',
+      'High series capacitance disc winding for improved impulse voltage protection',
+      'Transposed conductor winding reduces stray load loss and local overheating',
+      'Short-circuit withstand tested to IEC 60076-5, KEMA-certified',
+      'Cooling system selectable per capacity and site requirements (ONAN, ONAF, ODAN, ODAF, OFOW)',
+      'Manufactured by Fuji Tusco under Fuji Electric technical assignment',
+    ],
+    variants: [
+      { name: 'Oil-Immersed Distribution Transformer', image: '/images/products/switchgear/oil_immersed_transformer.jpg', specs: [{ label: 'Standard', value: 'IEC 60076-5' }, { label: 'Cooling', value: 'ONAN' }] },
+      { name: 'Oil-Immersed Power Transformer', image: '/images/products/switchgear/oil_immersed_transformer.jpg', specs: [{ label: 'Standard', value: 'IEC 60076-5' }, { label: 'Cooling', value: 'ONAN / ONAF / ODAN / ODAF / OFOW' }] },
+    ],
+    brochureLabel: 'Oil Immersed Transformer Brochure',
+    brochureUrl: '/brochures/fuji-oil-immersed-transformer.pdf',
+    relatedIds: ['switchgear', 'busway'],
+  },
+
+  {
     id: 'cable-tray',
     name: 'Cable Tray System',
     brand: "T'sys / Total Power Box",
@@ -391,6 +420,65 @@ const products: Product[] = [
       { name: 'GI Ladder Type (Wide)', image: '/images/products/cabletray/cabletray_gi_ladder2.png' },
     ],
     relatedIds: ['busway', 't-line-panelboard'],
+  },
+
+  // ─── INSTRUMENTATION ─────────────────────────────────────────────────────
+
+  {
+    id: 'fcx-pressure-transmitter',
+    name: 'Pressure Transmitter',
+    brand: 'Fuji Electric',
+    category: 'instrumentation',
+    tagline: 'FCX-AIII Series — Direct Mount Type (FKP)',
+    description:
+      'Micromachined capacitive silicon sensor pressure transmitter that accurately measures gauge pressure and transmits a proportional 4 to 20mA signal. Combines a high-accuracy sensor with microprocessor-based signal processing for reliable performance across liquid, gas, and vapor applications.',
+    standard: 'IEC 60076 hazardous-area approvals available (ATEX, FM, CSA, IECEx, TIIS)',
+    mainImage: '/images/products/instrumentation/pressure_transmitter.jpg',
+    features: [
+      'High accuracy ±0.1% of span, standard on all calibration ranges',
+      '"Advanced Floating Cell" design minimizes error from temperature and overpressure',
+      'Fuji/HART® bilingual communications protocol',
+      'Adjustable burnout current (Under Scale 3.2–4.0mA, Over Scale 20.0–22.5mA) per NAMUR NE43',
+      'Dry calibration without reference pressure',
+      'Full range of hazardous area approvals; built-in RFI filter and lightning arrester option',
+      '5-digit LCD meter with engineering unit (optional)',
+    ],
+    variants: [
+      { name: 'FKP□01', image: '/images/products/instrumentation/pressure_transmitter.jpg', specs: [{ label: 'Span Limit', value: '8.125–130 kPa' }, { label: 'Range Limit', value: '−100 to +130 kPa' }, { label: 'Overrange Limit', value: '1 MPa' }] },
+      { name: 'FKP□02', image: '/images/products/instrumentation/pressure_transmitter.jpg', specs: [{ label: 'Span Limit', value: '31.25–500 kPa' }, { label: 'Range Limit', value: '−100 to +500 kPa' }, { label: 'Overrange Limit', value: '1.5 MPa' }] },
+      { name: 'FKP□03', image: '/images/products/instrumentation/pressure_transmitter.jpg', specs: [{ label: 'Span Limit', value: '187.5–3000 kPa' }, { label: 'Range Limit', value: '−100 to +3000 kPa' }, { label: 'Overrange Limit', value: '9 MPa' }] },
+      { name: 'FKP□04', image: '/images/products/instrumentation/pressure_transmitter.jpg', specs: [{ label: 'Span Limit', value: '625–10000 kPa' }, { label: 'Range Limit', value: '−100 to +10000 kPa' }, { label: 'Overrange Limit', value: '15 MPa' }] },
+    ],
+    brochureLabel: 'FKP...5 Data Sheet',
+    brochureUrl: '/brochures/fkp5-pressure-transmitter.pdf',
+    relatedIds: ['ultrasonic-flowmeter'],
+  },
+
+  {
+    id: 'ultrasonic-flowmeter',
+    name: 'Ultrasonic Flowmeter',
+    brand: 'Fuji Electric',
+    category: 'instrumentation',
+    tagline: 'M-Flow PW — Clamp-On Type (FLR-3)',
+    description:
+      'Compact clamp-on ultrasonic flowmeter that measures liquid flow rate without contacting the fluid, by detecting the time difference of ultrasonic pulses propagated between sensors mounted on the exterior of the pipe. Features advanced anti-bubble measurement (ABM) for stable readings even with entrained bubbles.',
+    mainImage: '/images/products/instrumentation/ultrasonic_flowmeter.png',
+    features: [
+      'Advanced ABM (anti-bubble measurement) — 10x better bubble tolerance than conventional method',
+      'Compact transmitter: 140(H) x 130(W) x 69(D)mm, 0.8kg — 1/3 the size of previous model',
+      'High-speed digital signal processing, 0.2 second response',
+      'Easy clamp-on installation to existing pipe — no need to cut into the line',
+      '4–20mA DC output, 2-point pulse output, RS-485 (MODBUS) communication',
+      'Applicable pipe diameter φ25 to φ1200mm',
+      'Measurement accuracy up to 1.0% of rate (high accuracy type)',
+    ],
+    variants: [
+      { name: 'Compact Type Detector (FSSA)', image: '/images/products/instrumentation/ultrasonic_flowmeter.png', specs: [{ label: 'Pipe Diameter', value: 'φ25–225mm' }, { label: 'Mounting', value: 'V method' }, { label: 'Fluid Temp.', value: '−20 to 100°C' }] },
+      { name: 'Extendable Rail Type Detector (FSSC)', image: '/images/products/instrumentation/ultrasonic_flowmeter.png', specs: [{ label: 'Pipe Diameter', value: 'φ50–1200mm' }, { label: 'Mounting', value: 'V or Z method' }, { label: 'Fluid Temp.', value: '−40 to 120°C' }] },
+    ],
+    brochureLabel: 'M-Flow PW Brochure',
+    brochureUrl: '/brochures/flr-ultrasonic-flowmeter.pdf',
+    relatedIds: ['fcx-pressure-transmitter'],
   },
 ];
 

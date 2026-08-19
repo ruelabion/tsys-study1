@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import products, { CATEGORY_LABELS, type ProductCategory } from '../data/products';
+import ProductImage from './ProductImage';
 
 const CATEGORY_ORDER: ProductCategory[] = [
   'vfd',
@@ -16,9 +17,11 @@ const CATEGORY_ORDER: ProductCategory[] = [
 export default function ProductList({
   initialCategory,
   onSelectProduct,
+  onRequestQuote,
 }: {
   initialCategory?: ProductCategory;
   onSelectProduct: (id: string) => void;
+  onRequestQuote: (prefill?: { subject?: string; message?: string }) => void;
 }) {
   const [active, setActive] = useState<ProductCategory | 'all'>(initialCategory ?? 'all');
 
@@ -33,8 +36,8 @@ export default function ProductList({
           <h1 className="text-3xl md:text-5xl font-headline font-black tracking-tight mb-3">OUR PRODUCTS</h1>
           <div className="h-1 w-12 bg-primary"></div>
           <p className="mt-5 text-white/70 max-w-xl text-sm leading-relaxed">
-            Authorized distributor of HIMEL low-voltage electrical products and Fuji Electric variable frequency drives.
-            Custom-fabricated panel and busway systems available.
+            Authorized distributor of HIMEL low-voltage electrical products, Fuji Electric variable frequency drives, and
+            Fuji Electric instrumentation. Custom-fabricated panel, switchgear, and busway systems available.
           </p>
         </div>
       </div>
@@ -87,9 +90,10 @@ export default function ProductList({
             >
               {/* Image */}
               <div className="h-48 bg-surface-container-low border-b border-surface-container flex items-center justify-center p-6 overflow-hidden">
-                <img
+                <ProductImage
                   src={product.mainImage}
                   alt={product.name}
+                  size="md"
                   className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
@@ -130,7 +134,10 @@ export default function ProductList({
         <div className="bg-surface-container p-10 text-center">
           <p className="font-headline font-bold text-on-surface text-lg mb-2">Can't find what you need?</p>
           <p className="text-secondary text-sm mb-6">Contact our technical team for custom configurations and sourcing assistance.</p>
-          <button className="bg-primary text-white px-10 py-3 label-caps hover:bg-primary-container transition-all active:scale-95">
+          <button
+            onClick={() => onRequestQuote({ subject: 'Request for Quotation' })}
+            className="bg-primary text-white px-10 py-3 label-caps hover:bg-primary-container transition-all active:scale-95"
+          >
             GET A QUOTE
           </button>
         </div>

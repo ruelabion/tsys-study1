@@ -1,3 +1,5 @@
+import { Facebook } from 'lucide-react';
+
 const quickLinks = ['Home', 'Products', 'Services', 'About Us', 'Downloads', 'Contact Us'];
 const productCategories = [
   'Variable Frequency Drives',
@@ -26,7 +28,14 @@ export default function Footer() {
                 <div className="text-base font-black font-headline leading-snug">T'sys Industrial Controls Inc.</div>
               </div>
               <p className="text-white/60 text-sm leading-relaxed mb-5">Commercial &amp; Industrial Equipment Supplier</p>
-              <a href="https://www.facebook.com/tsysindustrial/" target="_blank" rel="noopener noreferrer" className="text-white/50 hover:text-white transition-colors text-sm underline underline-offset-2">
+              <a
+                href="https://www.facebook.com/tsysindustrial/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="T'sys Industrial Controls on Facebook"
+                className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm underline underline-offset-2"
+              >
+                <Facebook size={16} strokeWidth={1.5} />
                 Facebook
               </a>
             </div>
@@ -72,7 +81,7 @@ export default function Footer() {
 
       <div className="bg-deep-blue-dark border-t border-white/10 py-4">
         <div className="max-w-[1440px] mx-auto px-margin flex flex-col md:flex-row justify-between items-center gap-4 text-white/40 text-xs">
-          <span>© 2024 T'sys Industrial Controls Inc. All Rights Reserved.</span>
+          <span>© {new Date().getFullYear()} T'sys Industrial Controls Inc. All Rights Reserved.</span>
           <div className="flex gap-6">
             <a href="#" className="hover:text-white/70 transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-white/70 transition-colors">Terms & Conditions</a>
