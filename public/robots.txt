@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /settings
 
-Sitemap: https://study-dev.tsys.com.ph/sitemap.xml
+Sitemap: https://www.tsys.com.ph/sitemap.xml
