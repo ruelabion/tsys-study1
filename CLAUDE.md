@@ -52,6 +52,8 @@ type PageState =
 
 All page transitions use `motion/react` `AnimatePresence`. The `settings` page is a retained demo page (not in the T'sys navigation). `profile` page (UserProfile) is also a demo page — kept but not linked from main nav.
 
+`PageState` is mirrored to `sessionStorage` (key `tsys-page-state`) on every change and restored on mount (`loadPageState()` in `App.tsx`), so a browser refresh lands back on the same page instead of resetting to home. There is still no URL routing — the address bar doesn't reflect the current page, so links can't be shared/bookmarked to a specific product or category. If that's ever needed, this sessionStorage mechanism would need to be replaced with real URL sync (history API), not just extended.
+
 ### Product Data (`src/data/products.ts`)
 
 Single source of truth for all 14 products. Key exports:
@@ -76,7 +78,9 @@ A product's optional `brochureUrl` points to a real PDF in `public/brochures/`; 
 
 CategoryGrid → `onNavigateCategory(cat)` → ProductList (filtered) → `onSelectProduct(id)` → ProductDetail → `onBack()` → ProductList
 
-ProductDetail also has a Related Products strip that calls `onSelectProduct(id)` to navigate between products.
+ProductDetail also has a Related Products strip that calls `onSelectProduct(id)` to navigate between products, and a breadcrumb (`Products › {Category} › {Product Name}`) whose category segment also calls `onNavigateCategory(cat)` to jump straight to that filtered list.
+
+**Any new clickable-looking element (hover style, pointer cursor) must actually have an `onClick`.** This codebase has repeatedly shipped dead links/buttons that merely *look* interactive — the mobile hamburger (Session 16), footer Quick Links (Session 16), and the ProductDetail breadcrumb's category segment (Session 17) were all `<span>`/`<button>` elements styled as clickable with no handler wired up. When adding hover/cursor-pointer styling to an element, wire the handler in the same change, or don't style it as clickable.
 
 ### Design system (`src/index.css`)
 
@@ -121,6 +125,8 @@ public/brochures/   Real downloadable PDF datasheets, referenced by Product.broc
 
 Note: All four Fuji Electric VFD products now have real photos (see Session 6). The old `pl_*.png` placeholder set has been deleted. A product with no photo yet renders the shared `ProductImage` "Image Coming Soon" placeholder instead (see Session 6) — never reuse an unrelated product's image as a stand-in.
 
+**`variant.image` files (mcb/, mp/, mccb/, acb/) are genuinely tiny — 29×60px up to 170×121px.** They were cropped from the old Joomla site as small icon thumbnails for a variant selector, never as hero photography. `product.mainImage` (the top-level composite shot, e.g. `hdb9_mcb.png` at 350×213) is the only well-sized image for these products. If you see a small/blurry image somewhere it shouldn't be: check whether the code is rendering `variant.image` at a size larger than its native resolution — CSS `max-h-*`/`max-w-*` on an `<img>` only caps size, it does **not** upscale an image smaller than its container, so a tiny source image just renders small and floats in whitespace. This bit `ProductDetail.tsx`'s main hero panel (Session 17): it swapped to `variant.image` on selection, which looked fine for VFDs (whose variants reuse the same full-size photo) but shrank to nothing for MCB/MCCB/ACB/motor-starter products. Fixed by always showing `product.mainImage` in the hero and reserving `variant.image` for the small thumbnail selector row, where its native resolution is fine. Checked both `/Users/ruelabion/Sites/tsys.com.ph/tsys-website-static/images/tsys/products/` and the offline archive for larger originals — confirmed via MD5 that these are the only source assets that have ever existed; there is nothing better to salvage.
+
 ### Path alias
 
 `@` resolves to the project root.
@@ -147,8 +153,9 @@ Quick-reference checklist of everything done so far, for reuse in future session
 14. **Privacy Policy / Terms & Conditions pages added** — real content (not lorem ipsum), footer links wired up, reachable from every page since `Footer` is global. See Session 14 below.
 15. **LinkedIn link added to footer** — alongside Facebook, same pattern (icon + label, new tab).
 16. **Mobile hamburger menu fixed + full site QA pass** — the hamburger button had no `onClick` at all and no menu panel existed; added one. Then swept every link/button site-wide and fixed 3 more dead ones found in the process: the footer's 14 "Quick Links"/"Product Categories" links (`href="#"`, no handler), the homepage "LEARN MORE ABOUT OUR SERVICES" button, and the About page's closing "CONTACT US" CTA. See Session 16 below.
+17. **Product Detail hero image, refresh persistence, breadcrumb link** — hero image was rendering `variant.image` (tiny legacy crops, some as small as 29×60px) instead of the properly-sized `product.mainImage`; now always shows `mainImage` in the hero. Page state is now mirrored to `sessionStorage` so refreshing no longer resets to the homepage. Product Detail breadcrumb's category segment was styled as clickable but had no handler — now navigates to that filtered product list. See Session 17 below, and the new gotcha notes added to "Images" and "Navigation flow" above.
 
-**Open items / not yet done** (flagged in various sessions, still outstanding as of Session 16):
+**Open items / not yet done** (flagged in various sessions, still outstanding as of Session 17):
 - Contact form has never been tested end-to-end against the live AWS endpoint (deliberately, to avoid spamming T'sys's real inbox with test data) — a human should do one real test submission.
 - Legacy products (everything except the 4 with real `brochureUrl`s) still have non-functional brochure buttons if `brochureLabel` is set without a matching PDF.
 - `induction-motors`, `transfer-switch`, and `synchronizing-switchgear` categories are still "Coming Soon" placeholders with zero products.
@@ -308,3 +315,17 @@ New scroll-to-anchor mechanism in `App.tsx`: a `scrollTarget` state, set alongsi
 All fixes verified live via browser automation (console-clean, correct navigation, correct prefill) before committing. Confirmed `npm run build` still succeeds. Split into 4 atomic commits (hamburger menu, footer links, Learn More button, About CTA) and pushed to `main` — deploys automatically to `study-dev.tsys.com.ph` via the Session 12 CI/CD pipeline.
 
 Also declined the `/qa` skill's test-framework bootstrap prompt (would have set up Vitest + a full test suite) since this project intentionally has no test suite — see `npm run lint` in Commands above. Left a `.gstack/no-test-bootstrap` marker (gitignored) so future `/qa` runs don't re-prompt.
+
+### Session 17 — Product Detail hero image size, refresh persistence, breadcrumb link
+
+Started from a user report: on the Products page the category-featured images look nicely balanced, but on Product Detail the main image (both the default view and after clicking a thumbnail) renders small.
+
+**Root cause, not a CSS sizing tweak:** `ProductDetail.tsx`'s hero panel rendered `variant?.image ?? product.mainImage`, switching to the selected variant's image. That's fine for VFD products, whose variants all reuse the same full-size photo — but for HIMEL MCB/MCCB/ACB/motor-starter products, the per-variant crop files are genuinely tiny source assets (29×60px up to 170×121px; see the new note under "Images" above), versus `product.mainImage`'s properly composed 264–350px shot. An `<img>` with only `max-h-*`/`max-w-*` (no forced fill) renders a source image smaller than its container at native size — it doesn't scale up — so the hero showed a postage-stamp photo floating in a mostly-empty box. First tried bumping the container/constraint sizing (`min-h-[340px]` → fixed `h-[340px] md:h-[420px]`, `max-h-64` → `max-h-full`); this alone didn't fix it, because the underlying source pixels were still tiny. The actual fix was to stop swapping the hero to `variant.image` at all — it now always renders `product.mainImage`, and `variant.image` is reserved for the small 48×48 thumbnail selector row where its native resolution is fine. Thumbnail clicks still update the selected variant and the specs table below; they just no longer degrade the hero photo.
+
+Before committing to that fix, checked whether a better-resolution source existed anywhere: user pointed at `/Users/ruelabion/Sites/tsys.com.ph/tsys-website-static/images/resized/images` and `.../images/tsys/products`. Compared every MCB/MP/MCCB/ACB file there against the project's `public/images/products/` via MD5 — all identical. These tiny crops are the only assets that have ever existed for these variants (never full-size photography); nothing to salvage.
+
+Two more bugs reported in the same pass, both fixed together:
+- **Refresh reset to homepage** — `PageState` (`App.tsx`) only ever lived in `useState`, so an F5 always reinitialized to `{ page: 'home' }`. Added `loadPageState()` (reads/validates `sessionStorage['tsys-page-state']` on mount) and a `useEffect` that writes the current state back on every change. Still no real URL routing — the address bar never reflects the page, so links still can't be shared/bookmarked to a specific product; sessionStorage only survives refresh within the same tab/session. See the note added under "Page State" above.
+- **Product Detail breadcrumb category link** — the `{CATEGORY_LABELS[product.category]}` breadcrumb segment (e.g. "Circuit Breaker") had `hover:text-primary` + `cursor-pointer` styling but was a plain `<span>` with no handler, unlike the "Products" crumb next to it which was already a working `<button>`. Added an `onNavigateCategory` prop (same pattern as `Header`/`Footer`), turned the span into a `<button>`, wired it in `App.tsx` to `navigate({ page: 'products', category })`. This is at least the fifth instance of this exact "styled as clickable, isn't wired" bug across the project (hamburger menu, footer Quick Links/Product Categories, Learn More button, About CTA — all Session 16 — and this breadcrumb) — see the new "Any new clickable-looking element..." note under "Navigation flow" above.
+
+All three fixes verified live in-browser (desktop 1440px viewport): hero image now fills its box, refresh mid-navigation stays on the same product page, and clicking the "Circuit Breaker" breadcrumb correctly lands on the products list pre-filtered to that category (confirmed by scrolling the sticky filter bar to see it highlighted). `npm run lint` clean throughout. Two commits pushed directly to `main` (user explicitly requested commit + push each time) — deploys automatically to `study-dev.tsys.com.ph` via the Session 12 CI/CD pipeline.
