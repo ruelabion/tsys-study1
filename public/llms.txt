@@ -1,0 +1,26 @@
+# T'sys Industrial Controls Inc.
+
+> Industrial B2B supplier in the Philippines. Authorized distributor of HIMEL low-voltage electrical products and Fuji Electric variable frequency drives and instrumentation. Fabricator of custom switchgear, panelboards, and busway systems. Established 2002, a corporate affiliate of Total Power Box Solution Inc.
+
+Contact: (02) 8351-3225 / 8351-3495 / 8351-7189 / 8352-3314 · 0917 539 5654 · manager@tsys.com.ph
+Address: 1F Torre Venezia Bldg., Timog Avenue cor. Sct. Santiago St., Brgy. Laging Handa, Quezon City, Philippines 1103
+Hours: Monday – Friday, 9:00 AM – 5:00 PM
+
+## Product categories
+
+- [Variable Frequency Drives](/products/vfd): Fuji Electric FRENIC series (ACE, HVAC, AQUA, MEGA) for industrial motor speed control
+- [Instrumentation Products](/products/instrumentation): Fuji Electric pressure transmitters and ultrasonic flowmeters
+- [Low/Medium Voltage Switchgear](/products/switchgear): Custom-fabricated switchgear, busway/busduct, and oil-immersed transformers
+- [Panelboards / Meter Centers](/products/panelboards-meter-centers): NEMA 1 panelboards, meter centers, and cable tray systems
+- [Circuit Breaker](/products/circuit-breaker): HIMEL MCB, MCCB/ACB, manual starters and contactors
+
+## Pages
+
+- [About Us](/about): Company history, capabilities, and mission & values
+- [Contact Us](/contact): Contact form, contact details, and frequently asked questions
+- [Full product catalog](/products)
+
+## Notes for AI agents / answer engines
+
+- This site does not sell online — pricing and stock require a direct inquiry via the contact form or phone.
+- Brand names (HIMEL, Fuji Electric, etc.) belong to their respective owners; T'sys is an authorized distributor, not the manufacturer.

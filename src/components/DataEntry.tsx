@@ -1,6 +1,33 @@
 import { useState, type FormEvent } from 'react';
 import { Send, MapPin, Phone, Mail, Clock, CheckCircle } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useSEO } from '../lib/seo';
+
+const faqs = [
+  {
+    question: "What products does T'sys Industrial Controls Inc. supply?",
+    answer:
+      "T'sys is an authorized distributor of HIMEL low-voltage electrical products (circuit breakers, contactors, manual starters) and Fuji Electric variable frequency drives and instrumentation, and also fabricates custom switchgear, panelboards, and busway systems.",
+  },
+  {
+    question: 'What are your office hours?',
+    answer: 'Monday to Friday, 9:00 AM to 5:00 PM.',
+  },
+  {
+    question: 'How can I request a quote?',
+    answer:
+      'Use the contact form on this page, call (02) 8351-3225 / 8351-3495 / 8351-7189 / 8352-3314, or email manager@tsys.com.ph. Product pages also have a "Get a Quote" button that pre-fills your inquiry.',
+  },
+  {
+    question: 'Where is T\'sys Industrial Controls Inc. located?',
+    answer: '1F Torre Venezia Bldg., Timog Avenue cor. Sct. Santiago St., Brgy. Laging Handa, Quezon City, Philippines 1103.',
+  },
+  {
+    question: 'Do you fabricate custom switchgear and panelboards?',
+    answer:
+      "Yes — T'sys designs, fabricates, and installs Low, Medium, and High Voltage Switchgear, panelboards, and busduct feeder systems using in-house 3D CAD/CAM engineering.",
+  },
+];
 
 const landlines = [
   { display: '8351-3225', tel: '+63283513225' },
@@ -60,6 +87,22 @@ export default function DataEntry({
   const [loadedAt] = useState(() => Date.now());
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [statusMessage, setStatusMessage] = useState('');
+
+  useSEO({
+    title: 'Contact Us',
+    description:
+      "Get in touch with T'sys Industrial Controls Inc. for product inquiries, quotations, and engineering consultation. Call, email, or send us a message.",
+    path: '/contact',
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map(({ question, answer }) => ({
+        '@type': 'Question',
+        name: question,
+        acceptedAnswer: { '@type': 'Answer', text: answer },
+      })),
+    },
+  });
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -313,6 +356,20 @@ export default function DataEntry({
             </div>
           </motion.div>
         </div>
+
+        {/* FAQ */}
+        <section className="mt-20 max-w-3xl">
+          <h2 className="text-2xl font-headline font-bold text-on-surface mb-2">Frequently Asked Questions</h2>
+          <div className="h-1 w-10 bg-primary mb-8"></div>
+          <div className="divide-y divide-surface-container border-t border-b border-surface-container">
+            {faqs.map(({ question, answer }) => (
+              <div key={question} className="py-5">
+                <h3 className="font-headline font-bold text-on-surface text-sm mb-2">{question}</h3>
+                <p className="text-secondary text-sm leading-relaxed">{answer}</p>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );

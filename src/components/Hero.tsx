@@ -30,11 +30,9 @@ export default function Hero({
           className="max-w-2xl"
         >
           <p className="label-caps text-white/60 mb-6 tracking-widest">T'sys Industrial Controls Inc. — Est. 2002</p>
-          <h1 className="text-3xl md:text-5xl text-white mb-2 leading-tight tracking-tight">
-            Electrical Systems.
-          </h1>
-          <h1 className="text-3xl md:text-5xl text-primary mb-8 leading-tight tracking-tight">
-            Engineered, Built, and Delivered.
+          <h1 className="text-3xl md:text-5xl mb-8 leading-tight tracking-tight">
+            <span className="block text-white mb-2">Electrical Systems.</span>
+            <span className="block text-primary">Engineered, Built, and Delivered.</span>
           </h1>
           <p className="text-base md:text-lg text-white/80 mb-10 max-w-lg leading-relaxed font-normal">
             From industrial components to complete power and control systems, T’sys supports commercial and industrial projects with reliable engineering, fabrication, and supply.

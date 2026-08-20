@@ -1,4 +1,12 @@
+import { useSEO } from '../lib/seo';
+
 export default function TermsConditions({ onBack }: { onBack: () => void }) {
+  useSEO({
+    title: 'Terms & Conditions',
+    description: "The terms governing use of T'sys Industrial Controls Inc.'s website, including product-information disclaimers, intellectual property notes, and applicable Philippine law.",
+    path: '/terms',
+  });
+
   return (
     <div className="pt-[100px] pb-20">
       {/* Page Hero */}

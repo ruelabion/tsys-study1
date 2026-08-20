@@ -3,6 +3,7 @@ import { ChevronRight, Download, ArrowRight, CheckCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 import { getProductById, getProductsByCategory, CATEGORY_LABELS, type ProductCategory } from '../data/products';
 import ProductImage from './ProductImage';
+import { useSEO } from '../lib/seo';
 
 export default function ProductDetail({
   productId,
@@ -19,6 +20,41 @@ export default function ProductDetail({
 }) {
   const product = getProductById(productId);
   const [activeVariant, setActiveVariant] = useState(0);
+
+  useSEO({
+    title: product ? product.name : 'Product Not Found',
+    description: product
+      ? `${product.tagline} ${product.description}`.trim()
+      : "This product couldn't be found. Browse T'sys Industrial Controls Inc.'s full product catalog instead.",
+    path: `/product/${productId}`,
+    image: product?.mainImage,
+    ogType: 'product',
+    noindex: !product,
+    jsonLd: product
+      ? [
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Product',
+            name: product.name,
+            description: product.description,
+            image: `${window.location.origin}${product.mainImage ?? '/images/tsys/logo.jpg'}`,
+            brand: { '@type': 'Brand', name: product.brand },
+            category: CATEGORY_LABELS[product.category],
+            url: `${window.location.origin}/product/${product.id}`,
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: `${window.location.origin}/` },
+              { '@type': 'ListItem', position: 2, name: 'Products', item: `${window.location.origin}/products` },
+              { '@type': 'ListItem', position: 3, name: CATEGORY_LABELS[product.category], item: `${window.location.origin}/products/${product.category}` },
+              { '@type': 'ListItem', position: 4, name: product.name, item: `${window.location.origin}/product/${product.id}` },
+            ],
+          },
+        ]
+      : undefined,
+  });
 
   if (!product) {
     return (

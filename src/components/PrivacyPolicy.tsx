@@ -1,4 +1,12 @@
+import { useSEO } from '../lib/seo';
+
 export default function PrivacyPolicy({ onBack }: { onBack: () => void }) {
+  useSEO({
+    title: 'Privacy Policy',
+    description: "How T'sys Industrial Controls Inc. collects, uses, and protects the personal data submitted through this website, in line with the Data Privacy Act of 2012 (RA 10173).",
+    path: '/privacy',
+  });
+
   return (
     <div className="pt-[100px] pb-20">
       {/* Page Hero */}

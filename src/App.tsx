@@ -5,10 +5,7 @@
 
 import { useState, useEffect } from 'react';
 import Header from './components/Header';
-import Hero from './components/Hero';
-import CategoryGrid from './components/CategoryGrid';
-import TechSpecs from './components/TechSpecs';
-import TrustSection from './components/TrustSection';
+import Home from './components/Home';
 import ProductDetail from './components/ProductDetail';
 import ProductList from './components/ProductList';
 import About from './components/About';
@@ -16,43 +13,15 @@ import Settings from './components/Settings';
 import DataEntry from './components/DataEntry';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsConditions from './components/TermsConditions';
+import NotFound from './components/NotFound';
 import Footer from './components/Footer';
 import { Headphones } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import type { ProductCategory } from './data/products';
-
-type FormPrefill = { subject?: string; message?: string };
-
-type PageState =
-  | { page: 'home' }
-  | { page: 'products'; category?: ProductCategory }
-  | { page: 'product'; productId: string }
-  | { page: 'about' }
-  | { page: 'form'; prefill?: FormPrefill }
-  | { page: 'privacy' }
-  | { page: 'terms' }
-  | { page: 'settings' };
-
-const ACTUAL_BRANDS = ['HIMEL', 'Fuji Electric', 'Mitsubishi Electric', 'Schneider Electric', 'Siemens', 'Omron'];
-
-const PAGE_STATE_STORAGE_KEY = 'tsys-page-state';
-const VALID_PAGES = ['home', 'products', 'product', 'about', 'form', 'privacy', 'terms', 'settings'];
-
-function loadPageState(): PageState {
-  try {
-    const raw = sessionStorage.getItem(PAGE_STATE_STORAGE_KEY);
-    if (!raw) return { page: 'home' };
-    const parsed = JSON.parse(raw);
-    if (!parsed || !VALID_PAGES.includes(parsed.page)) return { page: 'home' };
-    if (parsed.page === 'product' && typeof parsed.productId !== 'string') return { page: 'home' };
-    return parsed as PageState;
-  } catch {
-    return { page: 'home' };
-  }
-}
+import { pathForState, parsePathToState, type PageState } from './lib/routes';
 
 export default function App() {
-  const [state, setState] = useState<PageState>(loadPageState);
+  const [state, setState] = useState<PageState>(() => parsePathToState(window.location.pathname));
   const [scrollTarget, setScrollTarget] = useState<string | null>(null);
 
   useEffect(() => {
@@ -66,11 +35,24 @@ export default function App() {
     window.scrollTo(0, 0);
   }, [state.page]);
 
+  // Real URL routing (History API) — the address bar always reflects the current
+  // page, so links are shareable/bookmarkable and crawlers can index individual
+  // product/category pages instead of only ever seeing the homepage.
   useEffect(() => {
-    sessionStorage.setItem(PAGE_STATE_STORAGE_KEY, JSON.stringify(state));
-  }, [state]);
+    const onPopState = () => setState(parsePathToState(window.location.pathname));
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
 
-  const navigate = (next: PageState) => setState(next);
+  const navigate = (next: PageState, opts?: { replace?: boolean }) => {
+    const path = pathForState(next);
+    if (opts?.replace) {
+      window.history.replaceState(null, '', path);
+    } else if (path !== window.location.pathname) {
+      window.history.pushState(null, '', path);
+    }
+    setState(next);
+  };
 
   // Simple page name for Header active state
   const currentPageKey = state.page;
@@ -95,55 +77,12 @@ export default function App() {
           {/* ── HOME ─────────────────────────────────────────────── */}
           {state.page === 'home' && (
             <motion.div key="home" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
-              <Hero
+              <Home
                 onExploreProducts={() => navigate({ page: 'products' })}
                 onGetQuote={() => navigate({ page: 'form' })}
-              />
-
-              <CategoryGrid
                 onNavigateCategory={category => navigate({ page: 'products', category })}
-                onViewAll={() => navigate({ page: 'products' })}
+                onNavigateContact={prefill => navigate({ page: 'form', prefill })}
               />
-
-              <TrustSection />
-              <TechSpecs
-                onLearnMore={() => navigate({ page: 'form', prefill: { subject: 'System Integration', message: 'I would like to learn more about your services.' } })}
-              />
-
-              {/* Trusted Brands */}
-              <section className="py-14 border-t border-surface-container">
-                <div className="max-w-[1440px] mx-auto px-margin">
-                  <div className="text-center mb-10">
-                    <h3 className="label-caps text-secondary tracking-widest">Brands We Distribute & Work With</h3>
-                  </div>
-                  <div className="flex flex-wrap justify-center items-center gap-10 md:gap-16">
-                    {ACTUAL_BRANDS.map(brand => (
-                      <span key={brand} className="font-headline font-bold text-xs uppercase tracking-widest text-secondary/50 hover:text-secondary transition-colors">
-                        {brand}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </section>
-
-              {/* CTA Banner */}
-              <section className="bg-deep-blue py-20 text-white">
-                <div className="max-w-[1440px] mx-auto px-margin flex flex-col md:flex-row justify-between items-center gap-10">
-                  <div className="flex items-start gap-6">
-                    <Headphones size={40} className="text-primary flex-shrink-0 mt-1 hidden md:block" />
-                    <div>
-                      <h2 className="text-3xl md:text-4xl font-headline mb-3">NEED HELP FINDING THE RIGHT SOLUTION?</h2>
-                      <p className="text-white/70 max-w-xl">Our team is ready to assist you. Get in touch with us today.</p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => navigate({ page: 'form' })}
-                    className="bg-primary text-white px-12 py-5 label-caps tracking-[0.15em] hover:bg-primary-container transition-all active:scale-95 whitespace-nowrap"
-                  >
-                    CONTACT US →
-                  </button>
-                </div>
-              </section>
             </motion.div>
           )}
 
@@ -154,6 +93,7 @@ export default function App() {
                 initialCategory={state.page === 'products' ? state.category : undefined}
                 onSelectProduct={id => navigate({ page: 'product', productId: id })}
                 onRequestQuote={prefill => navigate({ page: 'form', prefill })}
+                onCategoryChange={category => navigate({ page: 'products', category: category === 'all' ? undefined : category }, { replace: true })}
               />
             </motion.div>
           )}
@@ -201,6 +141,13 @@ export default function App() {
           {state.page === 'settings' && (
             <motion.div key="settings" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}>
               <Settings />
+            </motion.div>
+          )}
+
+          {/* ── NOT FOUND ────────────────────────────────────────── */}
+          {state.page === 'notfound' && (
+            <motion.div key="notfound" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <NotFound onNavigateHome={() => navigate({ page: 'home' }, { replace: true })} />
             </motion.div>
           )}
 

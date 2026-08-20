@@ -1,7 +1,15 @@
 import { motion } from 'motion/react';
 import { Bell, Lock, Globe, Monitor, Database, Terminal, Shield, Save } from 'lucide-react';
+import { useSEO } from '../lib/seo';
 
 export default function Settings() {
+  useSEO({
+    title: 'System Configuration',
+    description: 'Internal demo settings page — not part of the public T\'sys Industrial Controls Inc. site.',
+    path: '/settings',
+    noindex: true,
+  });
+
   const sections = [
     { 
       id: 'notifications', 

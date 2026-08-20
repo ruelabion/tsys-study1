@@ -1,5 +1,6 @@
 import { CheckCircle } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useSEO } from '../lib/seo';
 
 const capabilities = [
   'High Voltage Switchgear (HVSG)',
@@ -17,6 +18,13 @@ const values = [
 ];
 
 export default function About({ onNavigateContact }: { onNavigateContact: () => void }) {
+  useSEO({
+    title: 'About Us',
+    description:
+      "T'sys Industrial Controls Inc., established in 2002, is a corporate affiliate of Total Power Box Solution Inc. specializing in the design, fabrication, and installation of electrical and power control systems, from Low Voltage Switchgear to High Voltage Switchgear, panelboards, and busduct feeder systems.",
+    path: '/about',
+  });
+
   return (
     <div className="pt-[100px] pb-20">
       {/* Page Hero */}
