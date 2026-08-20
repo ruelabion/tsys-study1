@@ -163,15 +163,17 @@ Quick-reference checklist of everything done so far, for reuse in future session
 18. **Product Detail hero image: scale-to-fill instead of hiding low-res variants** — Session 17's hero-image fix (always show `mainImage`, never `variant.image`) was superseded same-day: only 3 of 14 products actually have tiny variant images (MCB, Manual Motor Starter, MCCB/ACB); the rest have real distinct per-variant photography that showing `mainImage` always was hiding. Hero now always shows `variant.image` again, sized `w-full h-full object-contain` to scale to fill its box in both directions — crisp for the 11 well-photographed products, deliberately soft/pixelated for the 3 low-res ones (a visible flag that those specific images need better source photography, not a bug to fix in code). See Session 18 below and the updated "Images" note above.
 19. **Real URL routing + full SEO/AEO pass** — replaced the sessionStorage page-state mechanism with real History-API routing (`src/lib/routes.ts`), so every page has a real, shareable, indexable URL. Added a `useSEO` hook (`src/lib/seo.ts`) that every page component calls with its own title/description/canonical/OG/Twitter/robots tags and JSON-LD (Product + BreadcrumbList on product pages, BreadcrumbList on category pages, FAQPage on Contact, WebSite on Home, site-wide Organization schema in `index.html`). Added `robots.txt`, `sitemap.xml`, and an `llms.txt` (AEO). Added a genuine, fact-based FAQ section to the Contact page. Fixed a real duplicate-`<h1>` bug on the homepage (Hero.tsx had two `<h1>`s for its two-line split-color headline — now one `<h1>` with two `<span>`s). Added `<meta name="developer" content="spiceworx.com">`. See Session 19 below for the domain-hardcoding assumption baked into the static files.
 20. **Custom og-image.png + real brand logos on homepage** — default `og:image`/`twitter:image` changed from the logo to a custom-composited 1200×630 image (letterboxed crop of the hero banner); the 6 "Brands We Distribute & Work With" text labels on the homepage replaced with real, sourced logo images (grayscale by default, full color on hover). See Session 20 below.
-21. **Promoted to production** — `tsys-study1` now deploys automatically to the real `tsys.com.ph`/`www.tsys.com.ph`, replacing the old static site. New independent GitHub Actions pipeline, rotated deploy credentials, SPA fallback added to the prod CloudFront distribution, and the 3 SEO files repointed from `study-dev.tsys.com.ph` to `www.tsys.com.ph`. `study-dev.tsys.com.ph` keeps running unchanged as the preview/QA environment. See Session 21 below for full resource IDs and the old pipeline that was retired.
+21. **Promoted to production** — `tsys-study1` now deploys automatically to the real `tsys.com.ph`/`www.tsys.com.ph`, replacing the old static site. New independent GitHub Actions pipeline, rotated deploy credentials, SPA fallback added to the prod CloudFront distribution, and the 3 SEO files repointed from `study-dev.tsys.com.ph` to `www.tsys.com.ph`. See Session 21 below for full resource IDs and the old pipeline that was retired.
+22. **study-dev.tsys.com.ph fully decommissioned** — now that production is live, the entire study-dev environment (S3 bucket, CloudFront distribution, OAC, Route 53 record, IAM deploy user, GitHub Actions workflow/secrets) was torn down. Production is completely unaffected (always ran on separate infrastructure). See Session 22 below — **there is no longer a staging/preview environment**; every push to `main` now goes straight to the live public site.
 
-**Open items / not yet done** (flagged in various sessions, still outstanding as of Session 21):
+**Open items / not yet done** (flagged in various sessions, still outstanding as of Session 22):
 - Contact form has never been tested end-to-end against the live AWS endpoint (deliberately, to avoid spamming T'sys's real inbox with test data) — a human should do one real test submission. This is now more urgent since the site is live in production.
 - Legacy products (everything except the 4 with real `brochureUrl`s) still have non-functional brochure buttons if `brochureLabel` is set without a matching PDF.
 - `induction-motors`, `transfer-switch`, and `synchronizing-switchgear` categories are still "Coming Soon" placeholders with zero products (also omitted from `sitemap.xml` for now — thin content).
 - `sitemap.xml` is a static hand-written file, not generated from `products.ts` — update it manually when products or categories are added/removed (matches the catalog's existing manual-maintenance pattern; see Session 19).
 - The PR disabling the old `ruelabion/tsys.com.ph` repo's deploy workflow (see Session 21) was opened but not auto-merged (repo-modification permission denied for direct push/merge in that repo) — a human needs to merge https://github.com/ruelabion/tsys.com.ph/pull/1 to fully retire it.
 - MCB, Manual Motor Starter, and MCCB/ACB variant images (29–170px) are visibly pixelated when scaled up on Product Detail (see Session 18) — client should be asked for higher-resolution product photography for these three; no better source exists in either old-site archive.
+- **No staging/preview environment exists anymore** (see Session 22) — every push to `main` deploys straight to the live public site via `deploy-production.yml`, with no pre-production step. Local `npm run build && npm run preview` before pushing is the only remaining safety net. Worth reconsidering if changes get riskier/larger.
 - The 6 `public/images/brands/` logos (Session 20) were sourced from Wikimedia Commons (Fuji Electric, Mitsubishi Electric, Schneider Electric, Siemens, Omron) and a third-party logo aggregator (HIMEL, since it has no Wikipedia/Wikimedia entry) rather than each brand's own official press kit — fine for a "brands we distribute/work with" strip, but if T'sys ever gets official brand-guideline logo files directly from these partners, swap these out for the authoritative versions.
 
 ---
@@ -273,7 +275,9 @@ The old site's contact form (`contact-us.html` + `assets/contact-form.js`) was a
 
 ### Session 12 — CI/CD: GitHub Actions → S3 → CloudFront → Route 53
 
-Live at **https://study-dev.tsys.com.ph** (also reachable directly via the CloudFront domain below). AWS account `033858994314`, profile `sciadmin`.
+**Decommissioned in Session 22** — all resources in this section (S3 bucket, CloudFront distribution, OAC, Route 53 record, IAM user, GitHub Actions secrets/workflow) were fully torn down once production went live; `study-dev.tsys.com.ph` no longer resolves. Kept below as a historical record of what this pipeline looked like.
+
+Was live at **https://study-dev.tsys.com.ph** (also reachable directly via the CloudFront domain below). AWS account `033858994314`, profile `sciadmin`.
 
 | Resource | Value |
 |---|---|
@@ -415,6 +419,8 @@ What was done, in order:
 5. **Fixed the Session 19 domain-hardcoding flag**: `sed`-replaced `study-dev.tsys.com.ph` → `www.tsys.com.ph` across `public/robots.txt`, `public/sitemap.xml`, and `index.html`'s static OG/canonical/JSON-LD tags. `src/lib/seo.ts`'s per-page tags needed no change (self-reference `window.location.origin` already).
 6. **New workflow**: `.github/workflows/deploy-production.yml`, a near-exact copy of the existing `deploy.yml` (Session 12) — same build steps, but targets `s3://tsys-website-prod` in `ap-northeast-1` and distribution `E1ZQEG5WQOCWTK`, using the new `PROD_*`-prefixed secrets so it can't collide with study-dev's existing secrets in the same repo. Both pipelines now run side by side on every push to `main` — study-dev remains the continuous preview/QA environment, unchanged.
 
+**Note (added same day, see Session 22):** study-dev was fully decommissioned later this same day, once production was confirmed working — it's no longer "the continuous preview/QA environment," it no longer exists at all.
+
 | Resource | Value |
 |---|---|
 | Prod S3 bucket | `tsys-website-prod` (ap-northeast-1, OAC-private, pre-existing) |
@@ -422,7 +428,26 @@ What was done, in order:
 | Prod ACM cert (covers apex + www) | `arn:aws:acm:us-east-1:033858994314:certificate/ea577ef4-623f-4582-8d25-2dfec3b01a2a` |
 | Deploy IAM user | `github-deploy-tsys` (policy `deploy-s3-cloudfront`; key rotated this session) |
 | Apex→www redirect | CloudFront Function `tsys-apex-to-www-redirect` (pre-existing, untouched) |
-| Retired pipeline | `ruelabion/tsys.com.ph` repo, `.github/workflows/deploy.yml` → disabled via PR #1 (unmerged — needs a human) |
+| Retired pipeline | `ruelabion/tsys.com.ph` repo, `.github/workflows/deploy.yml` → disabled via [PR #1](https://github.com/ruelabion/tsys.com.ph/pull/1), merged same day at the user's request |
 | Backup of old site | `/Users/ruelabion/Sites/tsys.com.ph/tsys-website-prod-backup-2026-08-20/` (local, 201 objects) |
 
-`npm run lint` and `npm run build` clean before shipping. See the end of this session's work for live-verification results (post-deploy, once the GitHub Actions run completes and CloudFront's SPA-fallback config finishes propagating).
+`npm run lint` and `npm run build` clean before shipping. Live-verified post-deploy: apex→www redirect works, deep links (`/products`, `/product/frenic-hvac`, etc.) load correctly via CloudFront's new SPA fallback, canonical/OG tags self-resolve to `www.tsys.com.ph`, `robots.txt`/`sitemap.xml` serve correctly, no console errors, study-dev unaffected throughout.
+
+### Session 22 — study-dev.tsys.com.ph fully decommissioned
+
+Same-day follow-up. With production confirmed working, the user asked to retire `study-dev.tsys.com.ph` — asked first whether the study-dev S3 bucket/CloudFront needed to be *kept* somehow since it was now serving production; clarified that's a misunderstanding — production runs on entirely separate infrastructure (`tsys-website-prod` bucket + `E1ZQEG5WQOCWTK`, ap-northeast-1) from study-dev (`tsys-study-dev` bucket + `E183JGTQTHVO9X`, ap-southeast-1), so tearing down study-dev has zero effect on the live site. User confirmed a **complete teardown** (not just taking it offline).
+
+Order of operations, each verified before moving to the next:
+1. Removed `.github/workflows/deploy.yml` from `tsys-study1` (commit + push) first, so no future push could try deploying to soon-to-be-deleted resources.
+2. Deleted the now-unused GitHub secrets (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `CLOUDFRONT_DISTRIBUTION_ID`) — the `PROD_*`-prefixed production secrets are untouched.
+3. Deleted the Route 53 CNAME for `study-dev.tsys.com.ph` (zone `Z31WA5GARGN3P`).
+4. Disabled CloudFront distribution `E183JGTQTHVO9X` (`Enabled: false`), then polled in a background task (`Bash` `run_in_background` with an `until` loop, per the harness's guidance for one-shot "wait until done" conditions) until its status returned to `Deployed` — took a few minutes to propagate globally, as expected — before it could legally be deleted.
+5. Deleted the distribution, then its Origin Access Control (`E2PCHJR8J3RHXX`).
+6. Emptied (`aws s3 rm --recursive`, 79 objects) then deleted the S3 bucket `tsys-study-dev`.
+7. Deleted the IAM user `github-deploy-tsys-study-dev` (access key → inline policy → user, in that order).
+
+Deliberately **not touched**: the ACM cert (`f88f10f3-3d76-4dd7-abb4-8ec786edd5de`) is the shared `*.tsys.com.ph` wildcard cert that predates study-dev (reused from elsewhere per Session 12's original notes) — left alone.
+
+Verified throughout and after: `https://www.tsys.com.ph/` and `https://tsys.com.ph/` kept returning 200/302 (redirect) at every step; `study-dev.tsys.com.ph` now fails to resolve entirely; `aws s3 ls s3://tsys-study-dev` and `aws iam get-user --user-name github-deploy-tsys-study-dev` both correctly error with "does not exist."
+
+**Consequence worth flagging** (also added under "Open items" above): this repo now has **no staging/preview environment at all**. Every push to `main` deploys straight to the live public site via `deploy-production.yml`, with nothing in between. This wasn't an oversight — the user explicitly chose full teardown — but it's a real change in risk profile for future work on this repo; local `npm run build && npm run preview` before pushing is the only remaining pre-flight check.
