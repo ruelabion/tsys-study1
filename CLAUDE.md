@@ -146,8 +146,9 @@ Quick-reference checklist of everything done so far, for reuse in future session
 13. **Homepage hero buttons wired up** — "Explore Products" navigates to the Products page; "Download Catalog" (no real catalog file existed anywhere) repurposed as "Get a Quote" → Contact page, matching the CTA pattern used everywhere else. See the new "Browser Testing Notes" section above — a lengthy false-alarm debugging session on this task's verification led to identifying and documenting the `document.hidden`/rAF-freeze browser-automation artifact.
 14. **Privacy Policy / Terms & Conditions pages added** — real content (not lorem ipsum), footer links wired up, reachable from every page since `Footer` is global. See Session 14 below.
 15. **LinkedIn link added to footer** — alongside Facebook, same pattern (icon + label, new tab).
+16. **Mobile hamburger menu fixed + full site QA pass** — the hamburger button had no `onClick` at all and no menu panel existed; added one. Then swept every link/button site-wide and fixed 3 more dead ones found in the process: the footer's 14 "Quick Links"/"Product Categories" links (`href="#"`, no handler), the homepage "LEARN MORE ABOUT OUR SERVICES" button, and the About page's closing "CONTACT US" CTA. See Session 16 below.
 
-**Open items / not yet done** (flagged in various sessions, still outstanding as of Session 15):
+**Open items / not yet done** (flagged in various sessions, still outstanding as of Session 16):
 - Contact form has never been tested end-to-end against the live AWS endpoint (deliberately, to avoid spamming T'sys's real inbox with test data) — a human should do one real test submission.
 - Legacy products (everything except the 4 with real `brochureUrl`s) still have non-functional brochure buttons if `brochureLabel` is set without a matching PDF.
 - `induction-motors`, `transfer-switch`, and `synchronizing-switchgear` categories are still "Coming Soon" placeholders with zero products.
@@ -291,3 +292,19 @@ Footer's `Privacy Policy` and `Terms & Conditions` links (`<a href="#">`) were d
 ### Session 15 — LinkedIn link added to footer
 
 T'sys also has a LinkedIn page: `https://www.linkedin.com/in/tsys-industrial-controls-inc-central-luzon-2b7302371/`. Added it to `Footer.tsx` next to the Facebook link, same pattern exactly — `Linkedin` icon (lucide-react), `target="_blank"`, `rel="noopener noreferrer"`, matching hover/underline styling and `aria-label`. Both social links now sit side by side in a `flex` row. Deployed and confirmed live on `study-dev.tsys.com.ph`.
+
+### Session 16 — Mobile hamburger menu fix + full site QA pass
+
+Started from a user report that the mobile hamburger menu didn't work. Root cause: `Header.tsx`'s hamburger `<button>` had no `onClick` at all, and no mobile menu panel existed anywhere in the component to toggle — it was a pure no-op. Added `isMenuOpen` state, a dropdown `<nav>` panel (same links as desktop plus the "Get a Quote" CTA), and an icon swap between `Menu`/`X` (lucide-react). Verified in-browser at a 390×844 viewport: opens, closes, navigates, and closes-on-navigate all work.
+
+Given the fix, did a full click-every-link sweep of the site (grepped for `href="#"` and every `<button>` across `src/components/` to check for missing `onClick`, then spot-verified each finding live in-browser via the gstack `/qa` skill). Found and fixed 3 more pre-existing dead links, unrelated to the hamburger bug:
+
+- **Footer "Quick Links" and "Product Categories" (14 links total)** — both columns were `<a href="#">` with no handler, present on every page since `Footer` is global. Converted to `<button>`s wired through a new `Footer` prop pair: `onNavigate(page)` for Quick Links (Home/Products/About Us/Contact Us → their real pages; **Downloads** → Products page, since that's where brochure downloads actually live, there's no dedicated downloads page; **Services** → home page then smooth-scrolls to the "Our Services" section) and `onNavigateCategory(category)` for Product Categories (filters the product list by category, same behavior as the homepage category grid — label-to-category mapping matches `CATEGORY_LABELS` in `src/data/products.ts` exactly).
+- **Homepage "LEARN MORE ABOUT OUR SERVICES" button** (`TechSpecs.tsx`) — no `onClick`. Wired to the Contact page with a `System Integration` subject prefill, the same subject string already used by `ProductDetail`'s "Talk to an Expert" CTA (Session 7).
+- **About page's closing "CONTACT US →" CTA** (`About.tsx`) — no `onClick`. Wired to the Contact page, no prefill (not tied to a specific product).
+
+New scroll-to-anchor mechanism in `App.tsx`: a `scrollTarget` state, set alongside `navigate({ page: 'home' })` when Footer's "Services" link is clicked; a `useEffect` waits 350ms (for the `AnimatePresence` page-swap animation to finish — see "Browser Testing Notes" above re: why animations matter here) then calls `scrollIntoView({ behavior: 'smooth' })` on `#services` (the id added to `TechSpecs`'s wrapping `<section>`). This is the only deep-linking/anchor-scroll behavior anywhere in the app; kept deliberately minimal (no URL hash sync, no generic anchor-link system) since nothing else in the codebase needed it.
+
+All fixes verified live via browser automation (console-clean, correct navigation, correct prefill) before committing. Confirmed `npm run build` still succeeds. Split into 4 atomic commits (hamburger menu, footer links, Learn More button, About CTA) and pushed to `main` — deploys automatically to `study-dev.tsys.com.ph` via the Session 12 CI/CD pipeline.
+
+Also declined the `/qa` skill's test-framework bootstrap prompt (would have set up Vitest + a full test suite) since this project intentionally has no test suite — see `npm run lint` in Commands above. Left a `.gstack/no-test-bootstrap` marker (gitignored) so future `/qa` runs don't re-prompt.
