@@ -77,10 +77,10 @@ export default function ProductDetail({
           <div className="lg:col-span-5">
             <div className="bg-white border border-surface-container p-10 flex items-center justify-center relative overflow-hidden group h-[340px] md:h-[420px]">
               <ProductImage
-                src={product.mainImage}
-                alt={product.name}
+                src={variant?.image ?? product.mainImage}
+                alt={variant?.name ?? product.name}
                 size="lg"
-                className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute bottom-3 right-3 bg-primary text-white px-3 py-1 label-caps text-[10px]">
                 {product.brand}
