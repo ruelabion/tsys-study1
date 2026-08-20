@@ -24,9 +24,9 @@ const services = [
   },
 ];
 
-export default function TechSpecs() {
+export default function TechSpecs({ onLearnMore }: { onLearnMore: () => void }) {
   return (
-    <section className="py-20 border-t border-surface-container">
+    <section id="services" className="py-20 border-t border-surface-container">
       <div className="max-w-[1440px] mx-auto px-margin">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <motion.div
@@ -64,7 +64,10 @@ export default function TechSpecs() {
               ))}
             </div>
 
-            <button className="border border-primary text-primary px-8 py-3 label-caps hover:bg-primary hover:text-white transition-all active:scale-95 inline-flex items-center gap-2">
+            <button
+              onClick={onLearnMore}
+              className="border border-primary text-primary px-8 py-3 label-caps hover:bg-primary hover:text-white transition-all active:scale-95 inline-flex items-center gap-2"
+            >
               LEARN MORE ABOUT OUR SERVICES <ArrowRight size={14} />
             </button>
           </div>

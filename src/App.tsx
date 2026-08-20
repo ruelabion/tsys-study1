@@ -86,7 +86,9 @@ export default function App() {
               />
 
               <TrustSection />
-              <TechSpecs />
+              <TechSpecs
+                onLearnMore={() => navigate({ page: 'form', prefill: { subject: 'System Integration', message: 'I would like to learn more about your services.' } })}
+              />
 
               {/* Trusted Brands */}
               <section className="py-14 border-t border-surface-container">
