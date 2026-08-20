@@ -16,7 +16,7 @@ const values = [
   { title: 'Partnership', desc: 'We go beyond the sale — providing after-sales support, consultation, and long-term technical assistance.' },
 ];
 
-export default function About() {
+export default function About({ onNavigateContact }: { onNavigateContact: () => void }) {
   return (
     <div className="pt-[100px] pb-20">
       {/* Page Hero */}
@@ -136,7 +136,10 @@ export default function About() {
             <h3 className="font-headline font-bold text-2xl mb-2">Ready to work with us?</h3>
             <p className="text-white/70 text-sm">Talk to our engineering team about your requirements.</p>
           </div>
-          <button className="bg-primary text-white px-10 py-4 label-caps hover:bg-primary-container transition-all active:scale-95 whitespace-nowrap">
+          <button
+            onClick={onNavigateContact}
+            className="bg-primary text-white px-10 py-4 label-caps hover:bg-primary-container transition-all active:scale-95 whitespace-nowrap"
+          >
             CONTACT US →
           </button>
         </div>

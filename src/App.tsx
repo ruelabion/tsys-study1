@@ -151,7 +151,7 @@ export default function App() {
           {/* ── ABOUT ────────────────────────────────────────────── */}
           {state.page === 'about' && (
             <motion.div key="about" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-              <About />
+              <About onNavigateContact={() => navigate({ page: 'form' })} />
             </motion.div>
           )}
 
