@@ -18,7 +18,7 @@ export default function PrivacyPolicy({ onBack }: { onBack: () => void }) {
           <h1 className="text-3xl md:text-5xl font-headline font-black tracking-tight mb-3">PRIVACY POLICY</h1>
           <div className="h-1 w-12 bg-primary"></div>
           <p className="mt-5 text-white/70 max-w-xl text-sm leading-relaxed">
-            Last updated: August 19, 2026
+            Last updated: August 20, 2026
           </p>
         </div>
       </div>
@@ -46,9 +46,10 @@ export default function PrivacyPolicy({ onBack }: { onBack: () => void }) {
               <li>Subject and message content of your inquiry</li>
             </ul>
             <p className="mt-3">
-              We do not currently use cookies, analytics trackers, or advertising pixels on this website. If this
-              changes in the future, this Privacy Policy will be updated accordingly before any such technology is
-              deployed.
+              We use Pirsch, a privacy-friendly, cookieless website analytics service, to understand overall visitor
+              traffic to this website (such as which pages are viewed and general visitor counts). Pirsch does not
+              use cookies, does not track you across other websites, and does not build an individual profile of you.
+              We do not use advertising pixels or ad-retargeting technology on this website.
             </p>
           </section>
 
