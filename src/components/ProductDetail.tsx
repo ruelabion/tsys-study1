@@ -73,12 +73,12 @@ export default function ProductDetail({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 mb-16 items-start">
           {/* Image Panel */}
           <div className="lg:col-span-5">
-            <div className="bg-white border border-surface-container p-10 flex items-center justify-center relative overflow-hidden group min-h-[340px]">
+            <div className="bg-white border border-surface-container p-10 flex items-center justify-center relative overflow-hidden group h-[340px] md:h-[420px]">
               <ProductImage
-                src={variant?.image ?? product.mainImage}
-                alt={variant?.name ?? product.name}
+                src={product.mainImage}
+                alt={product.name}
                 size="lg"
-                className="max-h-64 max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
+                className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute bottom-3 right-3 bg-primary text-white px-3 py-1 label-caps text-[10px]">
                 {product.brand}
