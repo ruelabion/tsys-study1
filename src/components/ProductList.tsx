@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import products, { CATEGORY_LABELS, type ProductCategory } from '../data/products';
@@ -46,9 +46,19 @@ export default function ProductList({
     setActive(initialCategory ?? 'all');
   }, [initialCategory]);
 
+  // Non-sticky anchor placed right above the sticky filter bar, so its position
+  // always reflects true document coordinates (unlike the filter bar itself,
+  // which reports ~100px from the viewport top once stuck, regardless of scroll).
+  const scrollAnchorRef = useRef<HTMLDivElement>(null);
+
   const handleSetActive = (category: ProductCategory | 'all') => {
     setActive(category);
     onCategoryChange?.(category);
+    const anchor = scrollAnchorRef.current;
+    if (anchor) {
+      const targetY = anchor.getBoundingClientRect().top + window.scrollY - 100;
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+    }
   };
 
   const filtered = active === 'all' ? products : products.filter(p => p.category === active);
@@ -89,6 +99,7 @@ export default function ProductList({
       </div>
 
       {/* Category Filter */}
+      <div ref={scrollAnchorRef} />
       <div className="border-b border-surface-container bg-white sticky top-[100px] z-30">
         <div className="max-w-[1440px] mx-auto px-margin">
           <div className="flex items-center gap-1 overflow-x-auto py-3">
