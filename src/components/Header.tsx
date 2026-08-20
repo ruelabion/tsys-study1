@@ -1,4 +1,5 @@
-import { Menu } from 'lucide-react';
+import { useState } from 'react';
+import { Menu, X } from 'lucide-react';
 
 type NavMeta = { category?: string; productId?: string };
 
@@ -16,9 +17,16 @@ export default function Header({
   onNavigate: (page: string, meta?: NavMeta) => void;
   currentPage: string;
 }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const isActive = (label: string, page: string) =>
     (label === 'Home' && currentPage === 'home') ||
     (page !== 'home' && currentPage === page);
+
+  const handleNavigate = (page: string) => {
+    setIsMenuOpen(false);
+    onNavigate(page);
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
@@ -72,7 +80,14 @@ export default function Header({
           </nav>
 
           <div className="flex items-center gap-3">
-            <button className="p-2 text-on-surface md:hidden"><Menu size={22} /></button>
+            <button
+              className="p-2 text-on-surface md:hidden"
+              onClick={() => setIsMenuOpen((open) => !open)}
+              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isMenuOpen}
+            >
+              {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
             <button
               className="hidden md:block bg-primary text-white px-5 py-2 label-caps hover:bg-primary-container transition-all active:scale-95"
               onClick={() => onNavigate('form')}
@@ -81,6 +96,28 @@ export default function Header({
             </button>
           </div>
         </div>
+
+        {isMenuOpen && (
+          <nav className="md:hidden border-t border-surface-container bg-white px-margin py-4 flex flex-col gap-1">
+            {navLinks.map(({ label, page }) => (
+              <button
+                key={label}
+                onClick={() => handleNavigate(page)}
+                className={`text-left text-sm font-semibold font-headline tracking-wide py-2 transition-colors ${
+                  isActive(label, page) ? 'text-primary' : 'text-on-surface hover:text-primary'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+            <button
+              className="mt-2 bg-primary text-white px-5 py-2.5 label-caps hover:bg-primary-container transition-all active:scale-95 text-center"
+              onClick={() => handleNavigate('form')}
+            >
+              Get a Quote
+            </button>
+          </nav>
+        )}
       </div>
     </header>
   );
