@@ -35,8 +35,24 @@ type PageState =
 
 const ACTUAL_BRANDS = ['HIMEL', 'Fuji Electric', 'Mitsubishi Electric', 'Schneider Electric', 'Siemens', 'Omron'];
 
+const PAGE_STATE_STORAGE_KEY = 'tsys-page-state';
+const VALID_PAGES = ['home', 'products', 'product', 'about', 'form', 'privacy', 'terms', 'settings'];
+
+function loadPageState(): PageState {
+  try {
+    const raw = sessionStorage.getItem(PAGE_STATE_STORAGE_KEY);
+    if (!raw) return { page: 'home' };
+    const parsed = JSON.parse(raw);
+    if (!parsed || !VALID_PAGES.includes(parsed.page)) return { page: 'home' };
+    if (parsed.page === 'product' && typeof parsed.productId !== 'string') return { page: 'home' };
+    return parsed as PageState;
+  } catch {
+    return { page: 'home' };
+  }
+}
+
 export default function App() {
-  const [state, setState] = useState<PageState>({ page: 'home' });
+  const [state, setState] = useState<PageState>(loadPageState);
   const [scrollTarget, setScrollTarget] = useState<string | null>(null);
 
   useEffect(() => {
@@ -49,6 +65,10 @@ export default function App() {
     }
     window.scrollTo(0, 0);
   }, [state.page]);
+
+  useEffect(() => {
+    sessionStorage.setItem(PAGE_STATE_STORAGE_KEY, JSON.stringify(state));
+  }, [state]);
 
   const navigate = (next: PageState) => setState(next);
 
@@ -145,6 +165,7 @@ export default function App() {
               onBack={() => navigate({ page: 'products' })}
               onSelectProduct={id => navigate({ page: 'product', productId: id })}
               onRequestQuote={prefill => navigate({ page: 'form', prefill })}
+              onNavigateCategory={category => navigate({ page: 'products', category })}
             />
           )}
 

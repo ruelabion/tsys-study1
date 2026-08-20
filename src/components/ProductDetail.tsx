@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ChevronRight, Download, ArrowRight, CheckCircle } from 'lucide-react';
 import { motion } from 'motion/react';
-import { getProductById, getProductsByCategory, CATEGORY_LABELS } from '../data/products';
+import { getProductById, getProductsByCategory, CATEGORY_LABELS, type ProductCategory } from '../data/products';
 import ProductImage from './ProductImage';
 
 export default function ProductDetail({
@@ -9,11 +9,13 @@ export default function ProductDetail({
   onBack,
   onSelectProduct,
   onRequestQuote,
+  onNavigateCategory,
 }: {
   productId: string;
   onBack: () => void;
   onSelectProduct: (id: string) => void;
   onRequestQuote: (prefill?: { subject?: string; message?: string }) => void;
+  onNavigateCategory: (category: ProductCategory) => void;
 }) {
   const product = getProductById(productId);
   const [activeVariant, setActiveVariant] = useState(0);
@@ -60,9 +62,9 @@ export default function ProductDetail({
         <div className="max-w-[1440px] mx-auto px-margin py-3 flex items-center gap-2 label-caps text-[11px] text-secondary">
           <button onClick={onBack} className="hover:text-primary transition-colors">Products</button>
           <ChevronRight size={12} />
-          <span className="hover:text-primary transition-colors cursor-pointer">
+          <button onClick={() => onNavigateCategory(product.category)} className="hover:text-primary transition-colors">
             {CATEGORY_LABELS[product.category]}
-          </span>
+          </button>
           <ChevronRight size={12} />
           <span className="text-on-surface font-bold">{product.name}</span>
         </div>
