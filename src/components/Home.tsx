@@ -7,7 +7,14 @@ import { useSEO } from '../lib/seo';
 import type { ProductCategory } from '../data/products';
 import type { FormPrefill } from '../lib/routes';
 
-const ACTUAL_BRANDS = ['HIMEL', 'Fuji Electric', 'Mitsubishi Electric', 'Schneider Electric', 'Siemens', 'Omron'];
+const ACTUAL_BRANDS: { name: string; logo: string; heightClass: string }[] = [
+  { name: 'HIMEL', logo: '/images/brands/himel.svg', heightClass: 'h-8 md:h-10' },
+  { name: 'Fuji Electric', logo: '/images/brands/fuji-electric.svg', heightClass: 'h-10 md:h-12' },
+  { name: 'Mitsubishi Electric', logo: '/images/brands/mitsubishi-electric.svg', heightClass: 'h-8 md:h-10' },
+  { name: 'Schneider Electric', logo: '/images/brands/schneider-electric.svg', heightClass: 'h-8 md:h-10' },
+  { name: 'Siemens', logo: '/images/brands/siemens.svg', heightClass: 'h-6 md:h-7' },
+  { name: 'Omron', logo: '/images/brands/omron.svg', heightClass: 'h-7 md:h-8' },
+];
 
 const HOME_DESCRIPTION =
   "T'sys Industrial Controls Inc. supplies HIMEL low-voltage electrical products and Fuji Electric variable frequency drives and instrumentation, and fabricates custom switchgear, panelboards, and busway systems for commercial and industrial projects in the Philippines.";
@@ -56,9 +63,13 @@ export default function Home({
           </div>
           <div className="flex flex-wrap justify-center items-center gap-10 md:gap-16">
             {ACTUAL_BRANDS.map(brand => (
-              <span key={brand} className="font-headline font-bold text-xs uppercase tracking-widest text-secondary/50 hover:text-secondary transition-colors">
-                {brand}
-              </span>
+              <img
+                key={brand.name}
+                src={brand.logo}
+                alt={brand.name}
+                title={brand.name}
+                className={`${brand.heightClass} w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300`}
+              />
             ))}
           </div>
         </div>
