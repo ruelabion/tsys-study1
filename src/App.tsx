@@ -37,8 +37,16 @@ const ACTUAL_BRANDS = ['HIMEL', 'Fuji Electric', 'Mitsubishi Electric', 'Schneid
 
 export default function App() {
   const [state, setState] = useState<PageState>({ page: 'home' });
+  const [scrollTarget, setScrollTarget] = useState<string | null>(null);
 
   useEffect(() => {
+    if (scrollTarget) {
+      const t = setTimeout(() => {
+        document.getElementById(scrollTarget)?.scrollIntoView({ behavior: 'smooth' });
+        setScrollTarget(null);
+      }, 350);
+      return () => clearTimeout(t);
+    }
     window.scrollTo(0, 0);
   }, [state.page]);
 
@@ -177,6 +185,16 @@ export default function App() {
       </main>
 
       <Footer
+        onNavigate={page => {
+          if (page === 'services') {
+            setScrollTarget('services');
+            navigate({ page: 'home' });
+          } else if (page === 'products') navigate({ page: 'products' });
+          else if (page === 'about') navigate({ page: 'about' });
+          else if (page === 'form') navigate({ page: 'form' });
+          else navigate({ page: 'home' });
+        }}
+        onNavigateCategory={category => navigate({ page: 'products', category })}
         onNavigatePrivacy={() => navigate({ page: 'privacy' })}
         onNavigateTerms={() => navigate({ page: 'terms' })}
       />

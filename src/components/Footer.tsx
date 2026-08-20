@@ -1,21 +1,36 @@
 import { Facebook, Linkedin } from 'lucide-react';
+import type { ProductCategory } from '../data/products';
 
-const quickLinks = ['Home', 'Products', 'Services', 'About Us', 'Downloads', 'Contact Us'];
-const productCategories = [
-  'Variable Frequency Drives',
-  'Induction Motors',
-  'Instrumentation Products',
-  'Low/Medium Voltage Switchgear',
-  'Transfer Switch',
-  'Panelboards / Meter Centers',
-  'Synchronizing Switchgear',
-  'Circuit Breaker',
+type FooterPage = 'home' | 'products' | 'services' | 'about' | 'form';
+
+const quickLinks: { label: string; page: FooterPage }[] = [
+  { label: 'Home', page: 'home' },
+  { label: 'Products', page: 'products' },
+  { label: 'Services', page: 'services' },
+  { label: 'About Us', page: 'about' },
+  { label: 'Downloads', page: 'products' },
+  { label: 'Contact Us', page: 'form' },
+];
+
+const productCategories: { label: string; category: ProductCategory }[] = [
+  { label: 'Variable Frequency Drives', category: 'vfd' },
+  { label: 'Induction Motors', category: 'induction-motors' },
+  { label: 'Instrumentation Products', category: 'instrumentation' },
+  { label: 'Low/Medium Voltage Switchgear', category: 'switchgear' },
+  { label: 'Transfer Switch', category: 'transfer-switch' },
+  { label: 'Panelboards / Meter Centers', category: 'panelboards-meter-centers' },
+  { label: 'Synchronizing Switchgear', category: 'synchronizing-switchgear' },
+  { label: 'Circuit Breaker', category: 'circuit-breaker' },
 ];
 
 export default function Footer({
+  onNavigate,
+  onNavigateCategory,
   onNavigatePrivacy,
   onNavigateTerms,
 }: {
+  onNavigate: (page: FooterPage) => void;
+  onNavigateCategory: (category: ProductCategory) => void;
   onNavigatePrivacy: () => void;
   onNavigateTerms: () => void;
 }) {
@@ -61,9 +76,9 @@ export default function Footer({
             <div>
               <h4 className="label-caps text-white/80 text-[11px] mb-5 border-b border-white/20 pb-3">Quick Links</h4>
               <ul className="space-y-3">
-                {quickLinks.map(link => (
-                  <li key={link}>
-                    <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">{link}</a>
+                {quickLinks.map(({ label, page }) => (
+                  <li key={label}>
+                    <button onClick={() => onNavigate(page)} className="text-white/60 hover:text-white transition-colors text-sm">{label}</button>
                   </li>
                 ))}
               </ul>
@@ -72,9 +87,9 @@ export default function Footer({
             <div>
               <h4 className="label-caps text-white/80 text-[11px] mb-5 border-b border-white/20 pb-3">Product Categories</h4>
               <ul className="space-y-3">
-                {productCategories.map(cat => (
-                  <li key={cat}>
-                    <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">{cat}</a>
+                {productCategories.map(({ label, category }) => (
+                  <li key={category}>
+                    <button onClick={() => onNavigateCategory(category)} className="text-white/60 hover:text-white transition-colors text-sm">{label}</button>
                   </li>
                 ))}
               </ul>
